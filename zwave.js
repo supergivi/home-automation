@@ -23,16 +23,20 @@ var Probki = function (settings) {
             url: self.url + new Date().getTime(),
             method: 'GET',
             async: true,
-            success: function (response) {
-                self.responseData = response.data;
-                self.extractData();
-                self.findRegion();
-                self.setValues();
-            },
-            error: function (response) {
-                console.log("Can not make request: " + response.statusText);
-            }
+            success: self.processSuccessResponse,
+            error: self.precessErrorResponse
         });
+    };
+
+    self.processSuccessResponse = function(response){
+        self.responseData = response.data;
+        self.extractData();
+        self.findRegion();
+        self.setValues();
+    };
+
+    self.precessErrorResponse = function(response){
+        console.log("Can not make request: " + response.statusText);
     };
 
     self.extractData = function () {
@@ -295,11 +299,13 @@ var corridor = new Room(
     }
 );
 
+home.addRoom(kitchen);
+home.addRoom(corridor);
+
+corridor.neighbors = [kitchen];
+
+
 var probki = new Probki();
 probki.start();
 
 
-corridor.neighbors = [kitchen];
-
-home.addRoom(kitchen);
-home.addRoom(corridor);
