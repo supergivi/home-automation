@@ -10,6 +10,8 @@ var Probki = function (settings) {
     self.yellow = typeof settings.yellow !== 'undefined' ? settings.yellow : 16;
     self.red = typeof settings.red !== 'undefined' ? settings.red : 13;
     self.unknown = typeof settings.unknown !== 'undefined' ? settings.unknown : 12;
+    self.devices = typeof settings.devices !== 'undefined' ? settings.devices : [];
+
 
     self.rawValue = 0;
     self.value = self.unknown;
@@ -28,14 +30,15 @@ var Probki = function (settings) {
         });
     };
 
-    self.processSuccessResponse = function(response){
+    self.processSuccessResponse = function (response) {
         self.responseData = response.data;
         self.extractData();
         self.findRegion();
         self.setValues();
+        self.setupDevices();
     };
 
-    self.precessErrorResponse = function(response){
+    self.precessErrorResponse = function (response) {
         console.log("Can not make request: " + response.statusText);
     };
 
@@ -66,9 +69,15 @@ var Probki = function (settings) {
         } else {
             self.value = self.unknown;
         }
-        zway.devices[3].instances[0].commandClasses[112].Set(80, self.value, 1);
-        console.log('Пробки YANDEX: ' + self.rawValue + ' color ' + self.value);
+        console.log('Yandex probki: ' + self.rawValue + ' color ' + self.value);
     };
+
+    self.setupDevices = function () {
+        self.devices.forEach(function (device) {
+            device.instances[0].commandClasses[112].Set(80, self.value, 1);
+        });
+    };
+
     self.start = function () {
         self.get();
         setInterval(self.get, 1000 * 60 * self.timeout);
@@ -305,7 +314,9 @@ home.addRoom(corridor);
 corridor.neighbors = [kitchen];
 
 
-var probki = new Probki();
+var probki = new Probki({
+    devices: [zway.devices[3]]
+});
 probki.start();
 
 
