@@ -1,6 +1,6 @@
-executeFile('models/home.js');
-executeFile('models/room.js');
-executeFile('models/probki.js');
+executeFile('custom/models/home.js');
+executeFile('custom/models/room.js');
+executeFile('custom/models/probki.js');
 
 var home = new Home({name: 'Дом'});
 
