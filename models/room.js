@@ -34,6 +34,35 @@ function Room(settings) {
 }
 
 Room.prototype = {
+    onChangesDetect: function () {
+        console.log(this.name + ': Детектированы изменеия');
+        if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
+
+            this.illuminate();
+            if (this.neighbors) {
+                this.neighbors.forEach(function (neighbor) {
+                    neighbor.onMotionNear();
+                });
+            }
+        }
+        if (this.isEmpty && this.illuminationIsOn) {
+            this.turnOffLamp();
+        }
+        if (this.motionIsNear) {
+            if (!this.illuminationIsOn && this.isDark) {
+                this.illuminate();
+                var room = this;
+                setTimeout(function () {
+                    if (room.isEmpty) {
+                        room.turnOffLamp();
+                    }
+                }, 20 * 1000);
+            }
+
+        }
+
+    },
+
     illuminate: function () {
         console.log(this.name + ': Включаю свет');
         this.lamp.Set(1);
@@ -132,36 +161,9 @@ Room.prototype = {
         this.motionIsNear = true;
         this.onChangesDetect();
         this.motionIsNear = false;
-    },
+    }
 
 //-------------------------------------------------------
 
-    onChangesDetect: function () {
-        console.log(this.name + ': Детектированы изменеия');
-        if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
 
-            this.illuminate();
-            if (this.neighbors) {
-                this.neighbors.forEach(function (neighbor) {
-                    neighbor.onMotionNear();
-                });
-            }
-        }
-        if (this.isEmpty && this.illuminationIsOn) {
-            this.turnOffLamp();
-        }
-        if (this.motionIsNear) {
-            if (!this.illuminationIsOn && this.isDark) {
-                this.illuminate();
-                var room = this;
-                setTimeout(function () {
-                    if (room.isEmpty) {
-                        room.turnOffLamp();
-                    }
-                }, 20 * 1000);
-            }
-
-        }
-
-    }
 };
