@@ -21,135 +21,6 @@ function Room(settings) {
     room.lastMotionAt = new Date(1);
     //Lamp
 
-    room.illuminate = function () {
-        console.log(room.name + ': Включаю свет');
-        room.lamp.Set(1);
-        room.illuminationIsOn = true;
-    };
-
-    room.turnOffLamp = function () {
-        console.log(room.name + ': Выключаю свет');
-        room.lamp.Set(0);
-        room.illuminationIsOn = false;
-        room.temporaryIlluminationIsOn = false;
-    };
-
-    //Motion
-
-    room.subscribeToMotionSensor = function () {
-        console.log(room.name + ': Подписываюсь на датчик движения');
-        if (room.motionSensor) {
-            room.motionSensor.bind(room.onMotionDetect);
-        }
-    };
-
-    room.onMotionDetect = function () {
-        console.log(room.name + ': Получена информация от датчика движения');
-        if (room.emptyRoomTimer) {
-            clearTimeout(room.emptyRoomTimer);
-        }
-        if (this.value) {
-            console.log(room.name + ': Есть движение в комнате');
-            room.isEmpty = false;
-            room.lastMotionAt = new Date();
-        } else {
-            room.emptyRoomTimer = setTimeout(function () {
-                console.log(room.name + ': Нет движения в комнате');
-                room.isEmpty = true;
-                room.onChangesDetect();
-            }, room.emptyRoomTimeout * 1000)
-        }
-        room.onChangesDetect();
-    };
-
-    //Lux
-
-    room.onLuxChange = function () {
-        if (!room.illuminationIsOn && !room.temporaryIlluminationIsOn) {
-            room.currentLux = this.value;
-            room.isDark = (room.currentLux < room.minLux);
-            console.log(room.name + ': Изменилась освещенность');
-        }
-        room.onChangesDetect();
-    };
-
-    room.subscribeToLuxSensor = function () {
-        if (room.luxSensor) {
-            console.log(room.name + ': Подписываюсь на датчик освещенности');
-            room.luxSensor.bind(room.onLuxChange);
-        }
-    };
-
-    // Switcher
-
-    room.onSwitcherChange = function () {
-        console.log(room.name + ': Выключатель был нажат');
-
-        room.onChangesDetect();
-    };
-
-    room.subscribeToSwitcher = function () {
-        if (room.switcher) {
-            console.log(room.name + ': Подписываюсь на выключатель');
-            room.switcher.bind(room.onSwitcherChange);
-        }
-    };
-
-
-    //Temperature
-
-    room.onTemperatureChange = function () {
-        console.log(room.name + ': Изменилась температура');
-        room.currentTemperature = this.value;
-        room.onChangesDetect();
-    };
-
-    room.subscribeToTemperatureSensor = function () {
-        if (room.temperatureSensor) {
-            console.log(room.name + ': Подписываюсь на датчик температуры');
-            room.temperatureSensor.bind(room.onTemperatureChange);
-        }
-    };
-
-    //Motion near
-
-    room.onMotionNear = function () {
-        console.log(room.name + ': Движение в помещении рядом');
-        room.motionIsNear = true;
-        room.onChangesDetect();
-        room.motionIsNear = false;
-    };
-
-    //-------------------------------------------------------
-
-    room.onChangesDetect = function () {
-        console.log(room.name + ': Детектированы изменеия');
-        if (!room.isEmpty && !room.illuminationIsOn && room.isDark) {
-
-            room.illuminate();
-            if (room.neighbors) {
-                room.neighbors.forEach(function (neighbor) {
-                    neighbor.onMotionNear();
-                });
-            }
-        }
-        if (room.isEmpty && room.illuminationIsOn) {
-            room.turnOffLamp();
-        }
-        if (room.motionIsNear) {
-            if (!room.illuminationIsOn && room.isDark) {
-                room.illuminate();
-                setTimeout(function () {
-                    if (room.isEmpty) {
-                        room.turnOffLamp();
-                    }
-                }, 20 * 1000);
-            }
-
-        }
-
-    };
-
     //init room
 
     console.log(room.name + ': Инициализирую помещение');
@@ -161,3 +32,136 @@ function Room(settings) {
 
 
 }
+
+Room.prototype = {
+    illuminate: function () {
+        console.log(this.name + ': Включаю свет');
+        this.lamp.Set(1);
+        this.illuminationIsOn = true;
+    },
+
+    turnOffLamp: function () {
+        console.log(this.name + ': Выключаю свет');
+        this.lamp.Set(0);
+        this.illuminationIsOn = false;
+        this.temporaryIlluminationIsOn = false;
+    },
+
+//Motion
+
+    subscribeToMotionSensor: function () {
+        console.log(this.name + ': Подписываюсь на датчик движения');
+        if (this.motionSensor) {
+            this.motionSensor.bind(this.onMotionDetect);
+        }
+    },
+
+    onMotionDetect: function () {
+        console.log(this.name + ': Получена информация от датчика движения');
+        if (this.emptyRoomTimer) {
+            clearTimeout(this.emptyRoomTimer);
+        }
+        if (this.value) {
+            console.log(this.name + ': Есть движение в комнате');
+            this.isEmpty = false;
+            this.lastMotionAt = new Date();
+        } else {
+            var room = this;
+            this.emptyRoomTimer = setTimeout(function () {
+                console.log(room.name + ': Нет движения в комнате');
+                room.isEmpty = true;
+                room.onChangesDetect();
+            }, this.emptyRoomTimeout * 1000)
+        }
+        this.onChangesDetect();
+    },
+
+//Lux
+
+    onLuxChange: function () {
+        if (!this.illuminationIsOn && !this.temporaryIlluminationIsOn) {
+            this.currentLux = this.value;
+            this.isDark = (this.currentLux < this.minLux);
+            console.log(this.name + ': Изменилась освещенность');
+        }
+        this.onChangesDetect();
+    },
+
+    subscribeToLuxSensor: function () {
+        if (this.luxSensor) {
+            console.log(this.name + ': Подписываюсь на датчик освещенности');
+            this.luxSensor.bind(this.onLuxChange);
+        }
+    },
+
+// Switcher
+
+    onSwitcherChange: function () {
+        console.log(this.name + ': Выключатель был нажат');
+
+        this.onChangesDetect();
+    },
+
+    subscribeToSwitcher: function () {
+        if (this.switcher) {
+            console.log(this.name + ': Подписываюсь на выключатель');
+            this.switcher.bind(this.onSwitcherChange);
+        }
+    },
+
+
+//Temperature
+
+    onTemperatureChange: function () {
+        console.log(this.name + ': Изменилась температура');
+        this.currentTemperature = this.value;
+        this.onChangesDetect();
+    },
+
+    subscribeToTemperatureSensor: function () {
+        if (this.temperatureSensor) {
+            console.log(this.name + ': Подписываюсь на датчик температуры');
+            this.temperatureSensor.bind(this.onTemperatureChange);
+        }
+    },
+
+//Motion near
+
+    onMotionNear: function () {
+        console.log(this.name + ': Движение в помещении рядом');
+        this.motionIsNear = true;
+        this.onChangesDetect();
+        this.motionIsNear = false;
+    },
+
+//-------------------------------------------------------
+
+    onChangesDetect: function () {
+        console.log(this.name + ': Детектированы изменеия');
+        if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
+
+            this.illuminate();
+            if (this.neighbors) {
+                this.neighbors.forEach(function (neighbor) {
+                    neighbor.onMotionNear();
+                });
+            }
+        }
+        if (this.isEmpty && this.illuminationIsOn) {
+            this.turnOffLamp();
+        }
+        if (this.motionIsNear) {
+            if (!this.illuminationIsOn && this.isDark) {
+                this.illuminate();
+                var room = this;
+                setTimeout(function () {
+                    if (room.isEmpty) {
+                        room.turnOffLamp();
+                    }
+                }, 20 * 1000);
+            }
+
+        }
+
+    }
+};
