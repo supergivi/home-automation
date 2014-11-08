@@ -53,10 +53,10 @@ Room.prototype = {
             if (!this.illuminationIsOn && this.isDark) {
                 this.illuminate();
                 setTimeout(function () {
-                    if (_this.isEmpty) {
-                        _this.turnOffLamp();
+                    if (this.isEmpty) {
+                        this.turnOffLamp();
                     }
-                }, 20 * 1000);
+                }.bind(this), 20 * 1000);
             }
 
         }
@@ -98,9 +98,9 @@ Room.prototype = {
         } else {
             this.emptyRoomTimer = setTimeout(function () {
                 console.log(room.name + ': Нет движения в комнате');
-                _this.isEmpty = true;
-                _this.onChangesDetect();
-            }, this.emptyRoomTimeout * 1000)
+                this.isEmpty = true;
+                this.onChangesDetect();
+            }.bind(this), this.emptyRoomTimeout * 1000)
         }
         this.onChangesDetect();
     },
