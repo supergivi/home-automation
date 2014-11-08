@@ -1,5 +1,8 @@
 function Room(settings) {
     var room = this;
+    if (typeof(settings) !== 'object') {
+        settings = {};
+    }
     room.name = settings.name;
     room.lamp = settings.lamp;
     room.motionSensor = settings.motionSensor;
@@ -34,32 +37,36 @@ function Room(settings) {
 }
 
 Room.prototype = {
-    onChangesDetect: function () {
-        console.log(this.name + ': Детектированы изменеия');
-        if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
+//    onChangesDetect: function () {
+//        console.log(this.name + ': Детектированы изменеия');
+//        if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
+//
+//            this.illuminate();
+//            if (this.neighbors) {
+//                this.neighbors.forEach(function (neighbor) {
+//                    neighbor.onMotionNear();
+//                });
+//            }
+//        }
+//        if (this.isEmpty && this.illuminationIsOn) {
+//            this.turnOffLamp();
+//        }
+//        if (this.motionIsNear) {
+//            if (!this.illuminationIsOn && this.isDark) {
+//                this.illuminate();
+//                setTimeout(function () {
+//                    if (this.isEmpty) {
+//                        this.turnOffLamp();
+//                    }
+//                }.bind(this), 20 * 1000);
+//            }
+//
+//        }
+//
+//    },
 
-            this.illuminate();
-            if (this.neighbors) {
-                this.neighbors.forEach(function (neighbor) {
-                    neighbor.onMotionNear();
-                });
-            }
-        }
-        if (this.isEmpty && this.illuminationIsOn) {
-            this.turnOffLamp();
-        }
-        if (this.motionIsNear) {
-            if (!this.illuminationIsOn && this.isDark) {
-                this.illuminate();
-                setTimeout(function () {
-                    if (this.isEmpty) {
-                        this.turnOffLamp();
-                    }
-                }.bind(this), 20 * 1000);
-            }
-
-        }
-
+    onChangesDetect: function(){
+      console.log('&&&&&&77777777777777777&&&&&&&&&&&77777&&&777&&&777&&&77777')
     },
 
     illuminate: function () {
