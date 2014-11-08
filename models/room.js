@@ -24,6 +24,35 @@ function Room(settings) {
     room.lastMotionAt = new Date(1);
     //Lamp
 
+    room.onChangesDetect = function () {
+        console.log(room.name + ': Детектированы изменеия');
+        if (!room.isEmpty && !room.illuminationIsOn && room.isDark) {
+
+            room.illuminate();
+            if (room.neighbors) {
+                room.neighbors.forEach(function (neighbor) {
+                    neighbor.onMotionNear();
+                });
+            }
+        }
+        if (room.isEmpty && room.illuminationIsOn) {
+            room.turnOffLamp();
+        }
+        if (room.motionIsNear) {
+            if (!room.illuminationIsOn && room.isDark) {
+                room.illuminate();
+                setTimeout(function () {
+                    if (room.isEmpty) {
+                        room.turnOffLamp();
+                    }
+                }.bind(room), 20 * 1000);
+            }
+
+        }
+
+    };
+
+
     //init room
 
     console.log(room.name + ': Инициализирую помещение');
@@ -37,37 +66,8 @@ function Room(settings) {
 }
 
 Room.prototype = {
-//    onChangesDetect: function () {
-//        console.log(this.name + ': Детектированы изменеия');
-//        if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
-//
-//            this.illuminate();
-//            if (this.neighbors) {
-//                this.neighbors.forEach(function (neighbor) {
-//                    neighbor.onMotionNear();
-//                });
-//            }
-//        }
-//        if (this.isEmpty && this.illuminationIsOn) {
-//            this.turnOffLamp();
-//        }
-//        if (this.motionIsNear) {
-//            if (!this.illuminationIsOn && this.isDark) {
-//                this.illuminate();
-//                setTimeout(function () {
-//                    if (this.isEmpty) {
-//                        this.turnOffLamp();
-//                    }
-//                }.bind(this), 20 * 1000);
-//            }
-//
-//        }
-//
-//    },
 
-    onChangesDetect: function(){
-      console.log('&&&&&&77777777777777777&&&&&&&&&&&77777&&&777&&&777&&&77777')
-    },
+
 
     illuminate: function () {
         console.log(this.name + ': Включаю свет');
