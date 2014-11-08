@@ -35,6 +35,7 @@ function Room(settings) {
 
 Room.prototype = {
     onChangesDetect: function () {
+        var _this = this;
         console.log(this.name + ': Детектированы изменеия');
         if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
 
@@ -51,10 +52,9 @@ Room.prototype = {
         if (this.motionIsNear) {
             if (!this.illuminationIsOn && this.isDark) {
                 this.illuminate();
-                var room = this;
                 setTimeout(function () {
-                    if (room.isEmpty) {
-                        room.turnOffLamp();
+                    if (_this.isEmpty) {
+                        _this.turnOffLamp();
                     }
                 }, 20 * 1000);
             }
@@ -86,6 +86,7 @@ Room.prototype = {
     },
 
     onMotionDetect: function () {
+        var _this = this;
         console.log(this.name + ': Получена информация от датчика движения');
         if (this.emptyRoomTimer) {
             clearTimeout(this.emptyRoomTimer);
@@ -95,11 +96,10 @@ Room.prototype = {
             this.isEmpty = false;
             this.lastMotionAt = new Date();
         } else {
-            var room = this;
             this.emptyRoomTimer = setTimeout(function () {
                 console.log(room.name + ': Нет движения в комнате');
-                room.isEmpty = true;
-                room.onChangesDetect();
+                _this.isEmpty = true;
+                _this.onChangesDetect();
             }, this.emptyRoomTimeout * 1000)
         }
         this.onChangesDetect();
