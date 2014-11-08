@@ -35,7 +35,6 @@ function Room(settings) {
 
 Room.prototype = {
     onChangesDetect: function () {
-        var _this = this;
         console.log(this.name + ': Детектированы изменеия');
         if (!this.isEmpty && !this.illuminationIsOn && this.isDark) {
 
@@ -86,7 +85,6 @@ Room.prototype = {
     },
 
     onMotionDetect: function () {
-        var _this = this;
         console.log(this.name + ': Получена информация от датчика движения');
         if (this.emptyRoomTimer) {
             clearTimeout(this.emptyRoomTimer);
@@ -97,7 +95,7 @@ Room.prototype = {
             this.lastMotionAt = new Date();
         } else {
             this.emptyRoomTimer = setTimeout(function () {
-                console.log(room.name + ': Нет движения в комнате');
+                console.log(this.name + ': Нет движения в комнате');
                 this.isEmpty = true;
                 this.onChangesDetect();
             }.bind(this), this.emptyRoomTimeout * 1000)
