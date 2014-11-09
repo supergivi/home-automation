@@ -68,6 +68,8 @@ Room.prototype.subscribeToMotionSensor = function () {
 
 Room.prototype.onMotionDetect = function () {
     console.log(this.name + ': Получена информация от датчика движения');
+    console.log(Object.keys(this).join(', '));
+
     if (this.emptyRoomTimer) {
         clearTimeout(this.emptyRoomTimer);
     }
