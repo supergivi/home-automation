@@ -3,7 +3,7 @@ executeFile('custom/models/room.js');
 executeFile('custom/models/probki.js');
 
 var home = new Home({name: 'Дом'});
-function Room(settings) {
+var Room = function (settings) {
     var room = this;
 
     if (typeof(settings) !== 'object') {
@@ -42,7 +42,7 @@ function Room(settings) {
     //room.subscribeToSwitcher();
 
 
-}
+};
 
 Room.prototype.illuminate = function () {
     console.log(this.name + ': Включаю свет');
