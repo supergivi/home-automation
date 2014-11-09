@@ -1,4 +1,4 @@
-function Home(settings) {
+var Home = function (settings) {
     var home = this;
     home.name = settings.name;
     home.rooms = [];
@@ -26,4 +26,4 @@ function Home(settings) {
         home.getLastMotion();
         console.log('Последнее движение: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name)
     }, 1000 * 10);
-}
+};
