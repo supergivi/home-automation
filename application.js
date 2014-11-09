@@ -61,19 +61,21 @@ Room.prototype.turnOffLamp = function () {
 
 Room.prototype.subscribeToMotionSensor = function () {
     console.log(this.name + ': Подписываюсь на датчик движения');
+    var _this = this;
     if (this.motionSensor) {
-        this.motionSensor.bind(this.onMotionDetect);
+        this.motionSensor.bind(function () {
+            _this.onMotionDetect(this)
+        });
     }
 };
 
-Room.prototype.onMotionDetect = function () {
+Room.prototype.onMotionDetect = function (level) {
     console.log(this.name + ': Получена информация от датчика движения');
-    console.log(Object.keys(this).join(', '));
 
     if (this.emptyRoomTimer) {
         clearTimeout(this.emptyRoomTimer);
     }
-    if (this.value) {
+    if (level.value) {
         console.log(this.name + ': Есть движение в комнате');
         this.isEmpty = false;
         this.lastMotionAt = new Date();
@@ -90,9 +92,9 @@ Room.prototype.onMotionDetect = function () {
 
 //Lux
 
-Room.prototype.onLuxChange = function () {
+Room.prototype.onLuxChange = function (level) {
     if (!this.illuminationIsOn && !this.temporaryIlluminationIsOn) {
-        this.currentLux = this.value;
+        this.currentLux = level.value;
         this.isDark = (this.currentLux < this.minLux);
         console.log(this.name + ': Изменилась освещенность');
     }
@@ -100,40 +102,49 @@ Room.prototype.onLuxChange = function () {
 };
 
 Room.prototype.subscribeToLuxSensor = function () {
+    var _this = this;
     if (this.luxSensor) {
         console.log(this.name + ': Подписываюсь на датчик освещенности');
-        this.luxSensor.bind(this.onLuxChange);
+        this.luxSensor.bind(function () {
+            _this.onLuxChange(this);
+        });
     }
 };
 
 // Switcher
 
-Room.prototype.onSwitcherChange = function () {
+Room.prototype.onSwitcherChange = function (level) {
     console.log(this.name + ': Выключатель был нажат');
 
     this.onChangesDetect();
 };
 
 Room.prototype.subscribeToSwitcher = function () {
+    var _this = this;
     if (this.switcher) {
         console.log(this.name + ': Подписываюсь на выключатель');
-        this.switcher.bind(this.onSwitcherChange);
+        this.switcher.bind(function () {
+            _this.onSwitcherChange(this);
+        });
     }
 };
 
 
 //Temperature
 
-Room.prototype.onTemperatureChange = function () {
+Room.prototype.onTemperatureChange = function (level) {
     console.log(this.name + ': Изменилась температура');
-    this.currentTemperature = this.value;
+    this.currentTemperature = level.value;
     this.onChangesDetect();
 };
 
 Room.prototype.subscribeToTemperatureSensor = function () {
+    var _this = this;
     if (this.temperatureSensor) {
         console.log(this.name + ': Подписываюсь на датчик температуры');
-        this.temperatureSensor.bind(this.onTemperatureChange);
+        this.temperatureSensor.bind(function(){
+            _this.onTemperatureChange(this)
+        });
     }
 };
 
