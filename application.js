@@ -4,8 +4,6 @@ executeFile('custom/models/probki.js');
 
 var home = new Home({name: 'Дом'});
 
-
-
 var kitchen = new Room(
     {
         name: 'Кухня',
@@ -34,10 +32,10 @@ var corridor = new Room(
 
 home.addRoom(kitchen);
 home.addRoom(corridor);
-
 corridor.neighbors = [kitchen];
 
 var probki = new Probki({
     devices: [zway.devices[3]]
 });
+home.start();
 probki.start();

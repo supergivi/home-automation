@@ -22,8 +22,14 @@ var Home = function (settings) {
         home.lastMotionRoom = _lastMotionRoom;
     };
 
-    home.interval = setInterval(function () {
-        home.getLastMotion();
-        console.log('Последнее движение: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name)
-    }, 1000 * 10);
+    home.start = function () {
+        home.rooms.forEach(function (room) {
+            room.start();
+        });
+
+        home.interval = setInterval(function () {
+            home.getLastMotion();
+            console.log('Последнее движение: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name)
+        }, 1000 * 10);
+    }
 };

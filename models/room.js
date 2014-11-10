@@ -1,4 +1,4 @@
-
+// Room model
 
 var Room = function (settings) {
     var room = this;
@@ -13,7 +13,6 @@ var Room = function (settings) {
     room.luxSensor = settings.luxSensor;
     room.temperatureSensor = settings.temperatureSensor;
     room.switcher = settings.switcher;
-
     room.minLux = settings.minLux;
     room.emptyRoomTimeout = settings.timeout;
 
@@ -26,21 +25,23 @@ var Room = function (settings) {
     room.motionIsNear = false;
     room.isDark = true;
     room.lastMotionAt = new Date(1);
-    //Lamp
-
-
-    //init room
-
-    console.log(room.name + ': Инициализирую помещение');
-    room.turnOffLamp();
-    room.subscribeToMotionSensor();
-    room.subscribeToLuxSensor();
-    room.subscribeToTemperatureSensor();
-    //room.subscribeToSwitcher();
-
-
 };
 
+// Start
+
+Room.prototype.start = function () {
+    console.log(room.name + ': Инициализирую помещение');
+    this.turnOffLamp();
+    this.subscribeToMotionSensor();
+    this.subscribeToLuxSensor();
+    this.subscribeToTemperatureSensor();
+    //room.subscribeToSwitcher();
+};
+
+
+
+
+// Lamp
 
 Room.prototype.illuminate = function () {
     console.log(this.name + ': Включаю свет');
