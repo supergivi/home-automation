@@ -30,7 +30,7 @@ var Room = function (settings) {
 // Start
 
 Room.prototype.start = function () {
-    console.log(room.name + ': Инициализирую помещение');
+    console.log(this.name + ': Инициализирую помещение');
     this.turnOffLamp();
     this.subscribeToMotionSensor();
     this.subscribeToLuxSensor();
