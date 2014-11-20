@@ -26,7 +26,7 @@ var wc = new Room(
         temperatureSensor: zway.devices[5].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[7].instances[2].commandClasses[37].data.level,
         minLux: 100,
-        timeout: 300
+        timeout: 120
     }
 );
 
@@ -39,7 +39,7 @@ var bathroom = new Room(
         temperatureSensor: zway.devices[6].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[7].instances[1].commandClasses[37].data.level,
         minLux: 100,
-        timeout: 300
+        timeout: 120
     }
 );
 
@@ -52,7 +52,7 @@ var corridor = new Room(
         temperatureSensor: zway.devices[3].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[4].instances[1].commandClasses[37].data.level,
         minLux: 50,
-        timeout: 60
+        timeout: 120
     }
 );
 home.addRoom(wc);
