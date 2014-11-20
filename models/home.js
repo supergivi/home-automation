@@ -1,5 +1,10 @@
 var Home = function (settings) {
     var home = this;
+
+    if (typeof(settings) !== 'object') {
+        settings = {};
+    }
+
     home.name = settings.name;
     home.rooms = [];
     home.lastMotionAt = new Date(1);

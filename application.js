@@ -17,6 +17,32 @@ var kitchen = new Room(
     }
 );
 
+var wc = new Room(
+    {
+        name: 'Туалет',
+        lamp: zway.devices[7].instances[2].SwitchBinary,
+        motionSensor: zway.devices[5].instances[0].commandClasses[48].data[1].level,
+        luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
+        temperatureSensor: zway.devices[5].instances[0].commandClasses[49].data[1].val,
+        switcher: zway.devices[7].instances[2].commandClasses[37].data.level,
+        minLux: 100,
+        timeout: 300
+    }
+);
+
+var bathroom = new Room(
+    {
+        name: 'Ванная',
+        lamp: zway.devices[7].instances[1].SwitchBinary,
+        motionSensor: zway.devices[6].instances[0].commandClasses[48].data[1].level,
+        luxSensor: zway.devices[6].instances[0].commandClasses[49].data[3].val,
+        temperatureSensor: zway.devices[6].instances[0].commandClasses[49].data[1].val,
+        switcher: zway.devices[7].instances[1].commandClasses[37].data.level,
+        minLux: 100,
+        timeout: 300
+    }
+);
+
 var corridor = new Room(
     {
         name: 'Коридор',
@@ -29,10 +55,11 @@ var corridor = new Room(
         timeout: 60
     }
 );
-
+home.addRoom(wc);
+home.addRoom(bathroom);
 home.addRoom(kitchen);
 home.addRoom(corridor);
-corridor.neighbors = [kitchen];
+corridor.neighbors = [kitchen, wc, bathroom];
 
 var probki = new Probki({
     devices: [zway.devices[3]]

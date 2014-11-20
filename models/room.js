@@ -38,9 +38,6 @@ Room.prototype.start = function () {
     //room.subscribeToSwitcher();
 };
 
-
-
-
 // Lamp
 
 Room.prototype.illuminate = function () {
@@ -127,7 +124,6 @@ Room.prototype.subscribeToSwitcher = function () {
         });
     }
 };
-
 
 //Temperature
 
