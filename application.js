@@ -4,10 +4,22 @@ executeFile('custom/models/probki.js');
 
 var home = new Home({name: 'Дом'});
 
+var lamps = {
+    kitchen: new Lamp([zway.devices[4].instances[2].SwitchBinary]),
+    wc: new Lamp([zway.devices[7].instances[2].SwitchBinary]),
+    bathroom: new Lamp([zway.devices[7].instances[1].SwitchBinary]),
+    corridor: new Lamp([zway.devices[4].instances[1].SwitchBinary]),
+    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary])
+};
+
+for(var index in lamps) {
+        object[index].on();
+}
+
 var kitchen = new Room(
     {
         name: 'Кухня',
-        lamp: zway.devices[4].instances[2].SwitchBinary,
+        lamp: lamps.kitchen,
         motionSensor: zway.devices[2].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[2].instances[0].commandClasses[49].data[3].val,
         temperatureSensor: zway.devices[2].instances[0].commandClasses[49].data[1].val,
@@ -20,7 +32,7 @@ var kitchen = new Room(
 var wc = new Room(
     {
         name: 'Туалет',
-        lamp: zway.devices[7].instances[2].SwitchBinary,
+        lamp: lamps.wc,
         motionSensor: zway.devices[5].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
         temperatureSensor: zway.devices[5].instances[0].commandClasses[49].data[1].val,
@@ -33,7 +45,7 @@ var wc = new Room(
 var bathroom = new Room(
     {
         name: 'Ванная',
-        lamp: zway.devices[7].instances[1].SwitchBinary,
+        lamp: lamps.bathroom,
         motionSensor: zway.devices[6].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[6].instances[0].commandClasses[49].data[3].val,
         temperatureSensor: zway.devices[6].instances[0].commandClasses[49].data[1].val,
@@ -46,7 +58,7 @@ var bathroom = new Room(
 var corridor = new Room(
     {
         name: 'Коридор',
-        lamp: zway.devices[4].instances[1].SwitchBinary,
+        lamp: lamps.corridor,
         motionSensor: zway.devices[3].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[3].instances[0].commandClasses[49].data[3].val,
         temperatureSensor: zway.devices[3].instances[0].commandClasses[49].data[1].val,
@@ -55,11 +67,25 @@ var corridor = new Room(
         timeout: 120
     }
 );
+
+var bigRoom = new Room(
+    {
+        name: 'room1',
+        lamp: lamps.bigRoom,
+        motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
+        luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
+        temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
+        switcher: zway.devices[11].instances[1].commandClasses[37].data.level,
+        minLux: 100,
+        timeout: 600
+    }
+);
 home.addRoom(wc);
 home.addRoom(bathroom);
 home.addRoom(kitchen);
 home.addRoom(corridor);
-corridor.neighbors = [kitchen, wc, bathroom];
+home.addRoom(bigRoom);
+corridor.neighbors = [kitchen, wc, bathroom, bigRoom];
 
 var probki = new Probki({
     devices: [zway.devices[3]]

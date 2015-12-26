@@ -42,13 +42,13 @@ Room.prototype.start = function () {
 
 Room.prototype.illuminate = function () {
     console.log(this.name + ': Включаю свет');
-    this.lamp.Set(1);
+    this.lamp.on();
     this.illuminationIsOn = true;
 };
 
 Room.prototype.turnOffLamp = function () {
     console.log(this.name + ': Выключаю свет');
-    this.lamp.Set(0);
+    this.lamp.off();
     this.illuminationIsOn = false;
     this.temporaryIlluminationIsOn = false;
 };
