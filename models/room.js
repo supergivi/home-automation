@@ -58,7 +58,7 @@ Room.prototype.turnOffLamp = function () {
     var self = this;
     setTimeout(function(){
         self.autoSwitch = false;
-    }, 5000);
+    }, 10000);
     this.illuminationIsOn = false;
     this.temporaryIlluminationIsOn = false;
 };
@@ -120,7 +120,10 @@ Room.prototype.subscribeToLuxSensor = function () {
 // Switcher
 
 Room.prototype.onSwitcherChange = function (level) {
-    if (!this.autoSwitch) {
+    if (this.autoSwitch) {
+        this.autoSwitch = false;
+    }
+    else {
         console.log(this.name + ': switch pressed' + level);
         this.onChangesDetect();
     }
