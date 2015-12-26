@@ -32,14 +32,9 @@ var Home = function (settings) {
             room.start();
         });
 
-        home.turnLampsOn();
-        setTimeout(home.turnLampsOff, 2000);
-        setTimeout(home.turnLampsOn, 4000);
-        setTimeout(home.turnLampsOff, 6000);
-
         home.interval = setInterval(function () {
             home.getLastMotion();
-            console.log('Последнее движение: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name)
+            console.log('last motion: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name)
         }, 1000 * 10);
     };
 
