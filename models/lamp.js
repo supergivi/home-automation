@@ -1,9 +1,6 @@
 var Lamp = function (lamps) {
     var lamp = this;
 
-    lamp.status = 'off';
-    lamp.off();
-
     lamp.lamps = lamps;
 
     lamp.on = function () {
@@ -22,5 +19,8 @@ var Lamp = function (lamps) {
 
     };
 
+
+    lamp.status = 'off';
+    lamp.off();
 
 };
