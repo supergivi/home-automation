@@ -13,10 +13,6 @@ var lamps = {
     bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary])
 };
 
-for(var index in lamps) {
-        object[index].on();
-}
-
 var kitchen = new Room(
     {
         name: 'Кухня',
