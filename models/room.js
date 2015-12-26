@@ -35,7 +35,7 @@ Room.prototype.start = function () {
     this.subscribeToMotionSensor();
     this.subscribeToLuxSensor();
     this.subscribeToTemperatureSensor();
-    room.subscribeToSwitcher();
+    this.subscribeToSwitcher();
 };
 
 // Lamp
@@ -110,7 +110,7 @@ Room.prototype.subscribeToLuxSensor = function () {
 // Switcher
 
 Room.prototype.onSwitcherChange = function (level) {
-    console.log(this.name + ': switch pressed');
+    console.log(this.name + ': switch pressed' + level);
 
     this.onChangesDetect();
 };
