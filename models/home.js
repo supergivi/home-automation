@@ -35,6 +35,7 @@ var Home = function (settings) {
         home.turnLampsOn();
         setTimeout(home.turnLampsOff, 2000);
         setTimeout(home.turnLampsOn, 4000);
+        setTimeout(home.turnLampsOff, 6000);
 
         home.interval = setInterval(function () {
             home.getLastMotion();
