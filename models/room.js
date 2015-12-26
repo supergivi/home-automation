@@ -42,13 +42,23 @@ Room.prototype.start = function () {
 
 Room.prototype.illuminate = function () {
     console.log(this.name + ': turn light on');
+    this.autoSwitch = true;
     this.lamp.on();
+    var self = this;
+    setTimeout(function(){
+        self.autoSwitch = false;
+    }, 5000);
     this.illuminationIsOn = true;
 };
 
 Room.prototype.turnOffLamp = function () {
     console.log(this.name + ': turn light off');
+    this.autoSwitch = true;
     this.lamp.off();
+    var self = this;
+    setTimeout(function(){
+        self.autoSwitch = false;
+    }, 5000);
     this.illuminationIsOn = false;
     this.temporaryIlluminationIsOn = false;
 };
@@ -110,8 +120,10 @@ Room.prototype.subscribeToLuxSensor = function () {
 // Switcher
 
 Room.prototype.onSwitcherChange = function (level) {
+    if (this.autoSwitch) {
+        return;
+    }
     console.log(this.name + ': switch pressed' + level);
-
     this.onChangesDetect();
 };
 
