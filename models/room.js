@@ -120,11 +120,11 @@ Room.prototype.subscribeToLuxSensor = function () {
 // Switcher
 
 Room.prototype.onSwitcherChange = function (level) {
-    if (this.autoSwitch) {
-        return;
+    if (!this.autoSwitch) {
+        console.log(this.name + ': switch pressed' + level);
+        this.onChangesDetect();
     }
-    console.log(this.name + ': switch pressed' + level);
-    this.onChangesDetect();
+
 };
 
 Room.prototype.subscribeToSwitcher = function () {
