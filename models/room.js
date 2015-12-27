@@ -90,12 +90,14 @@ var Room = function (settings) {
     };
 
     room.onSwitcherChange = function (level) {
-        console.log(room.name + ': switch pressed' + level);
+        console.log(room.name + ': switcher changed ' + level);
         console.log(room.name + ': autoswitch ' + room.autoSwitch);
         if (room.autoSwitch) {
             room.autoSwitch = false;
             console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         } else {
+            console.log(room.name + ': switcher pressed manually ' + level);
+
             room.onChangesDetect();
         }
 
