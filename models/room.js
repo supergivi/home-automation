@@ -20,9 +20,11 @@ var Room = function (settings) {
     room.illuminate = function () {
         console.log(room.name + ': turn light on');
         room.autoSwitch = true;
+        console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         room.lamp.on();
-        setTimeout(function(){
+        setTimeout(function () {
             room.autoSwitch = false;
+            console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         }, 10000);
         room.illuminationIsOn = true;
     };
@@ -30,9 +32,11 @@ var Room = function (settings) {
     room.turnOffLamp = function () {
         console.log(room.name + ': turn light off');
         room.autoSwitch = true;
+        console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         room.lamp.off();
-        setTimeout(function(){
+        setTimeout(function () {
             room.autoSwitch = false;
+            console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         }, 10000);
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
@@ -86,10 +90,10 @@ var Room = function (settings) {
     };
 
     room.onSwitcherChange = function (level) {
+        console.log(room.name + ': autoswitch ' + room.autoSwitch);
         if (room.autoSwitch) {
             room.autoSwitch = false;
-        }
-        else {
+        } else {
             console.log(room.name + ': switch pressed' + level);
             room.onChangesDetect();
         }
@@ -114,7 +118,7 @@ var Room = function (settings) {
     room.subscribeToTemperatureSensor = function () {
         if (room.temperatureSensor) {
             console.log(room.name + ': subscribe to temperature sensor');
-            room.temperatureSensor.bind(function(){
+            room.temperatureSensor.bind(function () {
                 room.onTemperatureChange(this)
             });
         }
