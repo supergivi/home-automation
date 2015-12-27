@@ -135,11 +135,11 @@ var Room = function (settings) {
 
     room.onChangesDetect = function () {
         console.log(room.name + ': changes detected');
-        if (room.switchPressedAt > (new Date() + 5000)){
-            if (room.illuminationIsOn) {
-                room.turnOffLamp();
-            } else {
+        if (room.switchPressedAt > (new Date() + 5000)) {
+            if (room.switcher) {
                 room.illuminate();
+            } else {
+                room.turnOffLamp();
             }
         }
 
