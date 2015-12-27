@@ -10,7 +10,7 @@ var lamps = {
     wc: new Lamp([zway.devices[7].instances[2].SwitchBinary]),
     bathroom: new Lamp([zway.devices[7].instances[1].SwitchBinary]),
     corridor: new Lamp([zway.devices[4].instances[1].SwitchBinary]),
-    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary])
+    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary, zway.devices[10].instances[1].SwitchBinary, zway.devices[10].instances[2].SwitchBinary])
 };
 
 var kitchen = new Room(
@@ -65,23 +65,23 @@ var corridor = new Room(
     }
 );
 
-//var bigRoom = new Room(
-//    {
-//        name: 'big room',
-//        lamp: lamps.bigRoom,
-//        motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
-//        luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
-//        temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
-//        switcher: zway.devices[11].instances[1].commandClasses[37].data.level,
-//        minLux: 100,
-//        timeout: 5
-//    }
-//);
+var bigRoom = new Room(
+    {
+        name: 'big room',
+        lamp: lamps.bigRoom,
+        motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
+        luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
+        temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
+        switcher: zway.devices[11].instances[1].commandClasses[37].data.level,
+        minLux: 44, // here precents/ not lux
+        timeout: 5
+    }
+);
 home.addRoom(wc);
 home.addRoom(bathroom);
 home.addRoom(kitchen);
 home.addRoom(corridor);
-//home.addRoom(bigRoom);
+home.addRoom(bigRoom);
 corridor.neighbors = [kitchen, wc, bathroom];
 
 var probki = new Probki({

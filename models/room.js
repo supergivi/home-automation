@@ -25,7 +25,7 @@ var Room = function (settings) {
         setTimeout(function () {
             room.autoSwitch = false;
             console.log(room.name + ': timeout set autoswitch ' + room.autoSwitch);
-        }, 10000);
+        }, 5000);
         room.illuminationIsOn = true;
     };
 
@@ -37,7 +37,7 @@ var Room = function (settings) {
         setTimeout(function () {
             room.autoSwitch = false;
             console.log(room.name + ': timeout set autoswitch ' + room.autoSwitch);
-        }, 10000);
+        }, 5000);
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
     };
@@ -91,13 +91,12 @@ var Room = function (settings) {
 
     room.onSwitcherChange = function (level) {
         console.log(room.name + ': switcher changed ' + level);
-        console.log(room.name + ': autoswitch ' + room.autoSwitch);
         if (room.autoSwitch) {
-            room.autoSwitch = false;
-            console.log(room.name + ': set autoswitch ' + room.autoSwitch);
+
         } else {
             console.log(room.name + ': switcher pressed manually ' + level);
-
+            room.switchPressedAt = new Date();
+            room.switcher = level;
             room.onChangesDetect();
         }
 
@@ -128,37 +127,47 @@ var Room = function (settings) {
     };
 
     room.onMotionNear = function () {
-        //console.log(room.name + ': detect near motion');
-        //room.motionIsNear = true;
-        //room.onChangesDetect();
-        //room.motionIsNear = false;
+        console.log(room.name + ': detect near motion');
+        room.motionIsNear = true;
+        room.onChangesDetect();
+        room.motionIsNear = false;
     };
 
     room.onChangesDetect = function () {
         console.log(room.name + ': changes detected');
-        if (!room.isEmpty && !room.illuminationIsOn && room.isDark) {
-
-            room.illuminate();
-            if (room.neighbors) {
-                room.neighbors.forEach(function (neighbor) {
-                    neighbor.onMotionNear();
-                });
+        if (room.switchPressedAt > (new Date() + 5000)){
+            if (room.illuminationIsOn) {
+                room.turnOffLamp();
+            } else {
+                room.illuminate();
             }
         }
-        if (room.isEmpty && room.illuminationIsOn) {
-            room.turnOffLamp();
+
+
+        if (room.motionIsNear) {
+            if (!room.illuminationIsOn && room.isDark) {
+                room.illuminate();
+                setTimeout(function () {
+                    if (room.isEmpty) {
+                        room.turnOffLamp();
+                    }
+                }, 20 * 1000);
+            }
+        } else {
+            if (!room.isEmpty && !room.illuminationIsOn && room.isDark) {
+
+                room.illuminate();
+                if (room.neighbors) {
+                    room.neighbors.forEach(function (neighbor) {
+                        neighbor.onMotionNear();
+                    });
+                }
+            }
+            if (room.isEmpty && room.illuminationIsOn) {
+                room.turnOffLamp();
+            }
         }
-        //if (room.motionIsNear) {
-        //    if (!room.illuminationIsOn && room.isDark) {
-        //        room.illuminate();
-        //        setTimeout(function () {
-        //            if (room.isEmpty) {
-        //                room.turnOffLamp();
-        //            }
-        //        }, 20 * 1000);
-        //    }
-        //
-        //}
+
 
     };
 
@@ -181,5 +190,6 @@ var Room = function (settings) {
     room.motionIsNear = false;
     room.isDark = true;
     room.lastMotionAt = new Date(1);
+    room.switchPressedAt = new Date(1);
 };
 
