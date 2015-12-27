@@ -21,9 +21,8 @@ var Room = function (settings) {
         console.log(room.name + ': turn light on');
         room.autoSwitch = true;
         room.lamp.on();
-        var self = room;
         setTimeout(function(){
-            self.autoSwitch = false;
+            room.autoSwitch = false;
         }, 10000);
         room.illuminationIsOn = true;
     };
@@ -32,9 +31,8 @@ var Room = function (settings) {
         console.log(room.name + ': turn light off');
         room.autoSwitch = true;
         room.lamp.off();
-        var self = room;
         setTimeout(function(){
-            self.autoSwitch = false;
+            room.autoSwitch = false;
         }, 10000);
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
@@ -88,7 +86,7 @@ var Room = function (settings) {
     };
 
     room.onSwitcherChange = function (level) {
-        if (room.autoSwitch) {
+        if (false){ //(room.autoSwitch) {
             room.autoSwitch = false;
         }
         else {
