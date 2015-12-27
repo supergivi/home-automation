@@ -76,7 +76,7 @@ var corridor = new Room(
 //        minLux: 100,
 //        timeout: 5
 //    }
-);
+//);
 home.addRoom(wc);
 home.addRoom(bathroom);
 home.addRoom(kitchen);
