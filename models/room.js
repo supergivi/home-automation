@@ -42,7 +42,7 @@ var Room = function (settings) {
         console.log(room.name + ': subscribe to motion sensor');
         if (room.motionSensor) {
             room.motionSensor.bind(function () {
-                room.onMotionDetect(room)
+                room.onMotionDetect(this)
             });
         }
     };
@@ -80,13 +80,13 @@ var Room = function (settings) {
         if (room.luxSensor) {
             console.log(room.name + ': subscribe to lux sensor');
             room.luxSensor.bind(function () {
-                room.onLuxChange(room);
+                room.onLuxChange(this);
             });
         }
     };
 
     room.onSwitcherChange = function (level) {
-        if (false){ //(room.autoSwitch) {
+        if (room.autoSwitch) {
             room.autoSwitch = false;
         }
         else {
@@ -100,7 +100,7 @@ var Room = function (settings) {
         if (room.switcher) {
             console.log(room.name + ': subscribe to switch');
             room.switcher.bind(function () {
-                room.onSwitcherChange(room);
+                room.onSwitcherChange(this);
             });
         }
     };
@@ -115,7 +115,7 @@ var Room = function (settings) {
         if (room.temperatureSensor) {
             console.log(room.name + ': subscribe to temperature sensor');
             room.temperatureSensor.bind(function(){
-                room.onTemperatureChange(room)
+                room.onTemperatureChange(this)
             });
         }
     };
