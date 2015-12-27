@@ -24,7 +24,7 @@ var Room = function (settings) {
         room.lamp.on();
         setTimeout(function () {
             room.autoSwitch = false;
-            console.log(room.name + ': set autoswitch ' + room.autoSwitch);
+            console.log(room.name + ': timeout set autoswitch ' + room.autoSwitch);
         }, 10000);
         room.illuminationIsOn = true;
     };
@@ -36,7 +36,7 @@ var Room = function (settings) {
         room.lamp.off();
         setTimeout(function () {
             room.autoSwitch = false;
-            console.log(room.name + ': set autoswitch ' + room.autoSwitch);
+            console.log(room.name + ': timeout set autoswitch ' + room.autoSwitch);
         }, 10000);
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
@@ -93,6 +93,8 @@ var Room = function (settings) {
         console.log(room.name + ': autoswitch ' + room.autoSwitch);
         if (room.autoSwitch) {
             room.autoSwitch = false;
+            console.log(room.name + ': set autoswitch ' + room.autoSwitch);
+
         } else {
             console.log(room.name + ': switch pressed' + level);
             room.onChangesDetect();
@@ -125,10 +127,10 @@ var Room = function (settings) {
     };
 
     room.onMotionNear = function () {
-        console.log(room.name + ': detect near motion');
-        room.motionIsNear = true;
-        room.onChangesDetect();
-        room.motionIsNear = false;
+        //console.log(room.name + ': detect near motion');
+        //room.motionIsNear = true;
+        //room.onChangesDetect();
+        //room.motionIsNear = false;
     };
 
     room.onChangesDetect = function () {
@@ -145,17 +147,17 @@ var Room = function (settings) {
         if (room.isEmpty && room.illuminationIsOn) {
             room.turnOffLamp();
         }
-        if (room.motionIsNear) {
-            if (!room.illuminationIsOn && room.isDark) {
-                room.illuminate();
-                setTimeout(function () {
-                    if (room.isEmpty) {
-                        room.turnOffLamp();
-                    }
-                }, 20 * 1000);
-            }
-
-        }
+        //if (room.motionIsNear) {
+        //    if (!room.illuminationIsOn && room.isDark) {
+        //        room.illuminate();
+        //        setTimeout(function () {
+        //            if (room.isEmpty) {
+        //                room.turnOffLamp();
+        //            }
+        //        }, 20 * 1000);
+        //    }
+        //
+        //}
 
     };
 
