@@ -97,7 +97,12 @@ var Room = function (settings) {
             console.log(room.name + ': switcher pressed manually ' + level);
             room.switchPressedAt = new Date();
             room.switcher = level;
-            room.onChangesDetect();
+            if (room.switcher) {
+                room.illuminate();
+            } else {
+                room.turnOffLamp();
+            }
+            //room.onChangesDetect();
         }
 
     };
@@ -135,13 +140,6 @@ var Room = function (settings) {
 
     room.onChangesDetect = function () {
         console.log(room.name + ': changes detected');
-        if ((room.switchPressedAt + 5000) > new Date() ) {
-            if (room.switcher) {
-                room.illuminate();
-            } else {
-                room.turnOffLamp();
-            }
-        }
 
 
         if (room.motionIsNear) {
