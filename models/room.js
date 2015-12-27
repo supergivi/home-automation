@@ -135,7 +135,7 @@ var Room = function (settings) {
 
     room.onChangesDetect = function () {
         console.log(room.name + ': changes detected');
-        if (room.switchPressedAt > (new Date() + 5000)) {
+        if ((room.switchPressedAt + 5000) > new Date() ) {
             if (room.switcher) {
                 room.illuminate();
             } else {
