@@ -57,12 +57,11 @@ var Room = function (settings) {
             room.isEmpty = false;
             room.lastMotionAt = new Date();
             room.firstMotionNearAt = null;
-            if (!room.illuminationIsOn && room.isDark) {
+            if (!room.illuminationIsOn && room.isDark && !room.isStopAutomation()) {
                 room.illuminate();
 
             }
         }
-
     };
 
     room.onLuxChange = function (level) {
@@ -85,9 +84,9 @@ var Room = function (settings) {
     room.onSwitcherChange = function (level) {
         console.log(room.name + ': switcher changed ' + level);
         if (room.autoSwitch) {
-          room.autoSwitch = false;
+            room.autoSwitch = false;
         } else {
-            console.log(room.name + ': switcher pressed manually ' + level + ' ' + !!level );
+            console.log(room.name + ': switcher pressed manually ' + level + ' ' + !!level);
             room.switchPressedAt = new Date();
             room.switcher = ('' + level === 'true');
             if (room.switcher) {
@@ -96,7 +95,6 @@ var Room = function (settings) {
                 room.turnOffLamp();
             }
         }
-
     };
 
     room.subscribeToSwitcher = function () {
@@ -144,32 +142,46 @@ var Room = function (settings) {
     };
 
     room.clockCycle = function () {
-        if (
-            !room.isEmpty &&
-            room.firstMotionNearAt &&
-            !room.isBacklight() &&
-            (room.firstMotionNearAt < (new Date() - (room.emptyRoomTimeout * 1000)))
-        ) {
-            room.setEmpty();
-        }
+        if (!room.isStopAutomation()) {
+            if (
+                !room.isEmpty &&
+                room.firstMotionNearAt && !room.isBacklight() &&
+                (room.firstMotionNearAt < (new Date() - (room.emptyRoomTimeout * 1000)))
+            ) {
+                room.setEmpty();
+            }
 
-        if (
-            !room.isEmpty &&
-            room.lastMotionAt &&
-            !room.isBacklight() &&
-            (room.lastMotionAt < (new Date() - (room.emptyRoomTimeout * 1000 * 10)))
-        ) {
-            room.setEmpty();
-        }
+            if (
+                !room.isEmpty &&
+                room.lastMotionAt && !room.isBacklight() &&
+                (room.lastMotionAt < (new Date() - (room.emptyRoomTimeout * 1000 * 10)))
+            ) {
+                room.setEmpty();
+            }
 
-        if (room.isEmpty && room.illuminationIsOn && !room.isBacklight()) {
-            room.setEmpty();
+            if (
+                room.isEmpty &&
+                room.illuminationIsOn && !room.isBacklight()
+            ) {
+                room.setEmpty();
+            }
+
+            if (
+                !room.isEmpty && !room.illuminationIsOn &&
+                room.isDark
+            ) {
+                room.illuminate();
+            }
         }
     };
 
 
     room.isBacklight = function () {
         return !!(room.backlightAt && room.backlightAt > (new Date() - 20000))
+    };
+
+    room.isStopAutomation = function () {
+        return !!(room.switchPressedAt && room.switchPressedAt > (new Date() - 10 * 60 * 1000));
     };
 
 
