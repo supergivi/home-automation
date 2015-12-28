@@ -19,12 +19,14 @@ var Room = function (settings) {
 
     room.illuminate = function () {
         console.log(room.name + ': turn light on');
+        room.autoSwitch = true;
         room.lamp.on();
         room.illuminationIsOn = true;
     };
 
     room.turnOffLamp = function () {
         console.log(room.name + ': turn light off');
+        room.autoSwitch = true;
         room.lamp.off();
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
@@ -81,20 +83,19 @@ var Room = function (settings) {
     };
 
     room.onSwitcherChange = function (level) {
-        //console.log(room.name + ': switcher changed ' + level);
-        //if (room.autoSwitch) {
-        //
-        //} else {
-        //    console.log(room.name + ': switcher pressed manually ' + level);
-        //    room.switchPressedAt = new Date();
-        //    room.switcher = level;
-        //    if (room.switcher) {
-        //        room.illuminate();
-        //    } else {
-        //        room.turnOffLamp();
-        //    }
-        //    //room.onChangesDetect();
-        //}
+        console.log(room.name + ': switcher changed ' + level);
+        if (room.autoSwitch) {
+          room.autoSwitch = false;
+        } else {
+            console.log(room.name + ': switcher pressed manually ' + level);
+            room.switchPressedAt = new Date();
+            room.switcher = level;
+            if (room.switcher) {
+                room.illuminate();
+            } else {
+                room.turnOffLamp();
+            }
+        }
 
     };
 
