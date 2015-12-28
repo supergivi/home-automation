@@ -89,7 +89,7 @@ var Room = function (settings) {
         } else {
             console.log(room.name + ': switcher pressed manually ' + level + ' ' + !!level );
             room.switchPressedAt = new Date();
-            room.switcher = (level === 'true');
+            room.switcher = ('' + level === 'true');
             if (room.switcher) {
                 room.illuminate();
             } else {
