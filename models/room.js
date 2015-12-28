@@ -100,7 +100,7 @@ var Room = function (settings) {
         console.log(room.name + ': switcher changed ' + level);
         if (room.autoSwitch) {
 
-        } else {
+        } else if (room.manuallySwitch) {
             console.log(room.name + ': switcher pressed manually ' + level + ' ' + !!level);
             room.switchPressedAt = new Date();
             room.switcher = ('' + level === 'true');
@@ -200,7 +200,7 @@ var Room = function (settings) {
         return !!(room.switchPressedAt && room.switchPressedAt > (new Date() - 10 * 60 * 1000));
     };
 
-
+    room.manuallySwitch = settings.manuallySwitch;
     room.name = settings.name;
     room.lamp = settings.lamp;
     room.motionSensor = settings.motionSensor;
