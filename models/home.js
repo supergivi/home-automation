@@ -34,7 +34,10 @@ var Home = function (settings) {
 
         home.interval = setInterval(function () {
             home.getLastMotion();
-            console.log('last motion: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name)
+            console.log('last motion: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name);
+            home.rooms.forEach(function (room) {
+                room.clockCycle();
+            });
         }, 1000 * 10);
     };
 

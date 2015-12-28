@@ -10,7 +10,7 @@ var Room = function (settings) {
 
     room.start = function () {
         console.log(room.name + ': initialize room');
-        room.turnOffLamp();
+        room.setEmpty();
         room.subscribeToMotionSensor();
         room.subscribeToLuxSensor();
         room.subscribeToTemperatureSensor();
@@ -19,25 +19,13 @@ var Room = function (settings) {
 
     room.illuminate = function () {
         console.log(room.name + ': turn light on');
-        room.autoSwitch = true;
-        console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         room.lamp.on();
-        setTimeout(function () {
-            room.autoSwitch = false;
-            console.log(room.name + ': timeout set autoswitch ' + room.autoSwitch);
-        }, 5000);
         room.illuminationIsOn = true;
     };
 
     room.turnOffLamp = function () {
         console.log(room.name + ': turn light off');
-        room.autoSwitch = true;
-        console.log(room.name + ': set autoswitch ' + room.autoSwitch);
         room.lamp.off();
-        setTimeout(function () {
-            room.autoSwitch = false;
-            console.log(room.name + ': timeout set autoswitch ' + room.autoSwitch);
-        }, 5000);
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
     };
@@ -53,22 +41,22 @@ var Room = function (settings) {
 
     room.onMotionDetect = function (level) {
         console.log(room.name + ': receive data from motion sensor');
-
-        if (room.emptyRoomTimer) {
-            clearTimeout(room.emptyRoomTimer);
-        }
         if (level.value) {
             console.log(room.name + ': motion detect');
+            if (room.isEmpty && room.neighbors) {
+                room.neighbors.forEach(function (neighbor) {
+                    neighbor.onMotionNear();
+                });
+            }
             room.isEmpty = false;
             room.lastMotionAt = new Date();
-        } else {
-            room.emptyRoomTimer = setTimeout(function () {
-                console.log(room.name + ': motion not detect');
-                room.isEmpty = true;
-                room.onChangesDetect();
-            }, room.emptyRoomTimeout * 1000)
+            room.firstMotionNearAt = null;
+            if (!room.illuminationIsOn && room.isDark) {
+                room.illuminate();
+
+            }
         }
-        room.onChangesDetect();
+
     };
 
     room.onLuxChange = function (level) {
@@ -77,7 +65,6 @@ var Room = function (settings) {
             room.isDark = (room.currentLux < room.minLux);
             console.log(room.name + ': lux changed');
         }
-        room.onChangesDetect();
     };
 
     room.subscribeToLuxSensor = function () {
@@ -90,20 +77,20 @@ var Room = function (settings) {
     };
 
     room.onSwitcherChange = function (level) {
-        console.log(room.name + ': switcher changed ' + level);
-        if (room.autoSwitch) {
-
-        } else {
-            console.log(room.name + ': switcher pressed manually ' + level);
-            room.switchPressedAt = new Date();
-            room.switcher = level;
-            if (room.switcher) {
-                room.illuminate();
-            } else {
-                room.turnOffLamp();
-            }
-            //room.onChangesDetect();
-        }
+        //console.log(room.name + ': switcher changed ' + level);
+        //if (room.autoSwitch) {
+        //
+        //} else {
+        //    console.log(room.name + ': switcher pressed manually ' + level);
+        //    room.switchPressedAt = new Date();
+        //    room.switcher = level;
+        //    if (room.switcher) {
+        //        room.illuminate();
+        //    } else {
+        //        room.turnOffLamp();
+        //    }
+        //    //room.onChangesDetect();
+        //}
 
     };
 
@@ -119,7 +106,6 @@ var Room = function (settings) {
     room.onTemperatureChange = function (level) {
         console.log(room.name + ': temperature changed');
         room.currentTemperature = level.value;
-        room.onChangesDetect();
     };
 
     room.subscribeToTemperatureSensor = function () {
@@ -133,40 +119,38 @@ var Room = function (settings) {
 
     room.onMotionNear = function () {
         console.log(room.name + ': detect near motion');
-        room.motionIsNear = true;
-        room.onChangesDetect();
-        room.motionIsNear = false;
+        if (!room.firstMotionNearAt) {
+            room.firstMotionNearAt = new Date();
+        }
     };
 
-    room.onChangesDetect = function () {
-        console.log(room.name + ': changes detected');
+    room.setEmpty = function () {
+        room.isEmpty = true;
+        room.firstMotionNearAt = null;
+        room.lastMotionAt = null;
+        room.turnOffLamp()
+    };
 
-
-        if (room.motionIsNear) {
-            if (!room.illuminationIsOn && room.isDark) {
-                room.illuminate();
-                setTimeout(function () {
-                    if (room.isEmpty) {
-                        room.turnOffLamp();
-                    }
-                }, 20 * 1000);
-            }
-        } else {
-            if (!room.isEmpty && !room.illuminationIsOn && room.isDark) {
-
-                room.illuminate();
-                if (room.neighbors) {
-                    room.neighbors.forEach(function (neighbor) {
-                        neighbor.onMotionNear();
-                    });
-                }
-            }
-            if (room.isEmpty && room.illuminationIsOn) {
-                room.turnOffLamp();
-            }
+    room.clockCycle = function () {
+        if (
+            !room.isEmpty &&
+            room.firstMotionNearAt &&
+            (room.firstMotionNearAt < (new Date() - (room.emptyRoomTimeout * 1000)))
+        ) {
+            room.setEmpty();
         }
 
+        if (
+            !room.isEmpty &&
+            room.lastMotionAt &&
+            (room.lastMotionAt < (new Date() - (room.emptyRoomTimeout * 1000 * 10)))
+        ) {
+            room.setEmpty();
+        }
 
+        if (room.isEmpty && room.illuminationIsOn) {
+            room.setEmpty();
+        }
     };
 
 
@@ -187,7 +171,8 @@ var Room = function (settings) {
     room.isEmpty = true;
     room.motionIsNear = false;
     room.isDark = true;
-    room.lastMotionAt = new Date(1);
+    room.lastMotionAt = null;
     room.switchPressedAt = new Date(1);
+    room.firstMotionNearAt = null;
 };
 

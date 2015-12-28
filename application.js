@@ -82,7 +82,11 @@ home.addRoom(bathroom);
 home.addRoom(kitchen);
 home.addRoom(corridor);
 home.addRoom(bigRoom);
-corridor.neighbors = [kitchen, wc, bathroom];
+corridor.neighbors = [kitchen, wc, bathroom, bigRoom];
+wc.neighbors = [corridor];
+bathroom.neighbors = [corridor];
+kitchen.neighbors = [corridor];
+bigRoom.neighbors = [corridor];
 
 var probki = new Probki({
     devices: [zway.devices[3]]
