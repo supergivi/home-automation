@@ -11,7 +11,8 @@ var Room = function (settings) {
     room.start = function () {
         console.log(room.name + ': initialize room');
         room.autoSwitch = true;
-        setTimeout(function(){
+        clearTimeout(room.autoSwitchTimeout);
+        room.autoSwitchTimeout = setTimeout(function(){
             room.autoSwitch = false;
         }, 10000);
         room.setEmpty();
@@ -24,7 +25,8 @@ var Room = function (settings) {
     room.turnLampOn = function () {
         console.log(room.name + ': turn light on');
         room.autoSwitch = true;
-        setTimeout(function(){
+        clearTimeout(room.autoSwitchTimeout);
+        room.autoSwitchTimeout = setTimeout(function(){
             room.autoSwitch = false;
         }, 5000);
         room.lamp.on();
@@ -34,7 +36,8 @@ var Room = function (settings) {
     room.turnLampOff = function () {
         console.log(room.name + ': turn light off');
         room.autoSwitch = true;
-        setTimeout(function(){
+        clearTimeout(room.autoSwitchTimeout);
+        room.autoSwitchTimeout = setTimeout(function(){
             room.autoSwitch = false;
         }, 5000);
         room.lamp.off();
