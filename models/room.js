@@ -45,9 +45,13 @@ var Room = function (settings) {
             console.log(room.name + ': motion detect');
             if (room.isEmpty && room.neighbors) {
                 room.neighbors.forEach(function (neighbor) {
-                    neighbor.onMotionNear();
+                    neighbor.onFirstMotionNear();
                 });
             }
+
+            room.neighbors.forEach(function (neighbor) {
+                neighbor.onMotionNear();
+            });
             room.isEmpty = false;
             room.lastMotionAt = new Date();
             room.firstMotionNearAt = null;
@@ -124,6 +128,13 @@ var Room = function (settings) {
         }
     };
 
+    room.onFirstMotionNear = function () {
+        if (room.isEmpty && room.isDark) {
+            room.illuminate();
+            room.backlightAt = new Date();
+        }
+    };
+
     room.setEmpty = function () {
         room.isEmpty = true;
         room.firstMotionNearAt = null;
@@ -135,6 +146,7 @@ var Room = function (settings) {
         if (
             !room.isEmpty &&
             room.firstMotionNearAt &&
+            !room.isBacklight() &&
             (room.firstMotionNearAt < (new Date() - (room.emptyRoomTimeout * 1000)))
         ) {
             room.setEmpty();
@@ -143,14 +155,20 @@ var Room = function (settings) {
         if (
             !room.isEmpty &&
             room.lastMotionAt &&
+            !room.isBacklight() &&
             (room.lastMotionAt < (new Date() - (room.emptyRoomTimeout * 1000 * 10)))
         ) {
             room.setEmpty();
         }
 
-        if (room.isEmpty && room.illuminationIsOn) {
+        if (room.isEmpty && room.illuminationIsOn && !room.isBacklight()) {
             room.setEmpty();
         }
+    };
+
+
+    room.isBacklight = function () {
+        return !!(room.backlightAt && room.backlightAt > (new Date() - 20000))
     };
 
 
