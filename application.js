@@ -35,7 +35,7 @@ var wc = new Room(
         temperatureSensor: zway.devices[5].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[7].instances[2].commandClasses[37].data.level,
         minLux: 100,
-        timeout: 5 //120
+        timeout: 120
     }
 );
 
@@ -74,7 +74,7 @@ var bigRoom = new Room(
         temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[11].instances[1].commandClasses[37].data.level,
         minLux: 44, // here percents/ not lux
-        timeout: 5
+        timeout: 600
     }
 );
 home.addRoom(wc);
