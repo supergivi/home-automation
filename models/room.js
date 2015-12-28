@@ -10,6 +10,10 @@ var Room = function (settings) {
 
     room.start = function () {
         console.log(room.name + ': initialize room');
+        room.autoSwitch = true;
+        setTimeout(function(){
+            room.autoSwitch = false;
+        }, 10000);
         room.setEmpty();
         room.subscribeToMotionSensor();
         room.subscribeToLuxSensor();
@@ -20,6 +24,9 @@ var Room = function (settings) {
     room.illuminate = function () {
         console.log(room.name + ': turn light on');
         room.autoSwitch = true;
+        setTimeout(function(){
+            room.autoSwitch = false;
+        }, 5000);
         room.lamp.on();
         room.illuminationIsOn = true;
     };
@@ -27,6 +34,9 @@ var Room = function (settings) {
     room.turnOffLamp = function () {
         console.log(room.name + ': turn light off');
         room.autoSwitch = true;
+        setTimeout(function(){
+            room.autoSwitch = false;
+        }, 5000);
         room.lamp.off();
         room.illuminationIsOn = false;
         room.temporaryIlluminationIsOn = false;
@@ -84,7 +94,7 @@ var Room = function (settings) {
     room.onSwitcherChange = function (level) {
         console.log(room.name + ': switcher changed ' + level);
         if (room.autoSwitch) {
-            room.autoSwitch = false;
+
         } else {
             console.log(room.name + ': switcher pressed manually ' + level + ' ' + !!level);
             room.switchPressedAt = new Date();
