@@ -143,7 +143,7 @@ var Room = function (settings) {
     };
 
     room.onFirstMotionNear = function () {
-        if (room.isEmpty && room.isDark) {
+        if (room.isEmpty && room.isDark && !room.isStopAutomation()) {
             room.turnLampOn();
             room.backlightAt = new Date();
         }
@@ -197,7 +197,7 @@ var Room = function (settings) {
     };
 
     room.isStopAutomation = function () {
-        return !!(room.switchPressedAt && room.switchPressedAt > (new Date() - 10 * 60 * 1000));
+        return !!(room.switchPressedAt && room.switchPressedAt > (new Date() - 10 * 60 * 60 * 1000));
     };
 
     room.manuallySwitch = settings.manuallySwitch;
