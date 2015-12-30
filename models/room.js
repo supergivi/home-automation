@@ -162,6 +162,7 @@ var Room = function (settings) {
                 !room.isEmpty &&
                 !room.isBacklight() &&
                 room.firstMotionNearAt &&
+                room.lastMotionAt && (room.lastMotionAt <  new Date()) &&
                 (room.firstMotionNearAt < (new Date() - (room.emptyRoomTimeout * 1000)))
             ) {
                 room.setEmpty();
