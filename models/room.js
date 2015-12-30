@@ -58,6 +58,9 @@ var Room = function (settings) {
         console.log(room.name + ': receive data from motion sensor');
         if (level.value) {
             console.log(room.name + ': motion detect');
+            if (!room.illuminationIsOn && room.isDark && !room.isStopAutomation()) {
+                room.turnLampOn();
+            }
             if (room.isEmpty) {
                 room.neighbors.forEach(function (neighbor) {
                     neighbor.onFirstMotionNear();
@@ -70,9 +73,7 @@ var Room = function (settings) {
             room.isEmpty = false;
             room.lastMotionAt = (new Date() + (60 * 60 * 1000));
             room.firstMotionNearAt = null;
-            if (!room.illuminationIsOn && room.isDark && !room.isStopAutomation()) {
-                room.turnLampOn();
-            }
+
         } else {
             console.log(room.name + ': motion not detect');
             room.lastMotionAt = new Date();
