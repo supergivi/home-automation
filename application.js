@@ -10,8 +10,8 @@ var lamps = {
     wc: new Lamp([zway.devices[7].instances[2].SwitchBinary]),
     bathroom: new Lamp([zway.devices[7].instances[1].SwitchBinary]),
     corridor: new Lamp([zway.devices[4].instances[1].SwitchBinary]),
-    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary]),
-    littleRoom: new Lamp([zway.devices[10].instances[1].SwitchBinary, zway.devices[10].instances[2].SwitchBinary])
+    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary, zway.devices[10].instances[1].SwitchBinary, zway.devices[10].instances[2].SwitchBinary]),
+    littleRoom: new Lamp([])
 
 };
 
