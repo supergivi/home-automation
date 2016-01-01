@@ -108,11 +108,15 @@ var Room = function (settings) {
             if (!room.manuallySwitchTimer) {
                 room.manuallySwitchTimer = setTimeout(function () {
                     zway.devices[10].instances[1].commandClasses[37].Get(function (level) {
+                        console.log(room.name + ': switcher 1 callback ' + level);
+
                         room.switcher1 = ('' + level === 'true');
                         room.switcher1CallbackDone = true;
                         room.afterSwitchersCallbacks();
                     });
                     zway.devices[10].instances[2].commandClasses[37].Get(function (level) {
+                        console.log(room.name + ': switcher 2 callback ' + level);
+
                         room.switcher2 = ('' + level === 'true');
                         room.switcher2CallbackDone = true;
                         room.afterSwitchersCallbacks();
@@ -126,6 +130,8 @@ var Room = function (settings) {
         if (!room.switcher1CallbackDone || !room.switcher2CallbackDone){
             return;
         }
+        console.log(room.name + ': after switcher callbacks ' + room.switcher1 + ' ' + room.switcher2);
+
         if (room.switcher2 === room.switcher1) {
             room.isStopAutomation = true;
             if (room.switcher2) {
@@ -136,6 +142,8 @@ var Room = function (settings) {
         } else {
             room.isStopAutomation = false;
         }
+        console.log(room.name + ': stop automation ' + room.isStopAutomation);
+
         room.manuallySwitchTimer = null;
     };
 
