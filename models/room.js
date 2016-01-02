@@ -108,16 +108,16 @@ var Room = function (settings) {
             if (!room.manuallySwitchTimer) {
                 room.manuallySwitchTimer = setTimeout(function () {
                     zway.devices[10].instances[1].commandClasses[37].Get(function (level) {
-                        console.log(room.name + ': switcher 1 callback ' + level.value);
+                        console.log(room.name + ': switcher 1 callback ' + level.level);
 
-                        room.switcher1 = ('' + level.value === 'true');
+                        room.switcher1 = ('' + level.level === 'true');
                         room.switcher1CallbackDone = true;
                         room.afterSwitchersCallbacks();
                     });
                     zway.devices[10].instances[2].commandClasses[37].Get(function (level) {
-                        console.log(room.name + ': switcher 2 callback ' + level.value);
+                        console.log(room.name + ': switcher 2 callback ' + level.level);
 
-                        room.switcher2 = ('' + level.value === 'true');
+                        room.switcher2 = ('' + level.level === 'true');
                         room.switcher2CallbackDone = true;
                         room.afterSwitchersCallbacks();
                     });
