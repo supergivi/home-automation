@@ -11,7 +11,8 @@ var lamps = {
     bathroom: new Lamp([zway.devices[7].instances[1].SwitchBinary]),
     corridor: new Lamp([zway.devices[4].instances[1].SwitchBinary]),
     bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary, zway.devices[10].instances[1].SwitchBinary, zway.devices[10].instances[2].SwitchBinary]),
-    littleRoom: new Lamp([])
+    littleRoom: new Lamp([]),
+    bigRoomFake: new Lamp([])
 
 };
 
@@ -74,7 +75,7 @@ var corridor = new Room(
 var bigRoom = new Room(
     {
         name: 'big room',
-        lamp: lamps.bigRoom,
+        lamp: lamps.bigRoomFake,
         motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
         luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
         temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
