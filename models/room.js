@@ -115,7 +115,7 @@ var Room = function (settings) {
                         room.afterSwitchersCallbacks();
                     });
                     zway.devices[10].instances[2].commandClasses[37].Get(function (level) {
-                        console.log(room.name + ': switcher 2 callback ' + level.data.level.value);
+                        console.log(room.name + ': switcher 2 callback ');
 
                         room.switcher2 = zway.devices[10].instances[2].commandClasses[37].data.level.value;
                         room.switcher2CallbackDone = true;
