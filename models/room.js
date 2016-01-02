@@ -109,6 +109,7 @@ var Room = function (settings) {
                 room.manuallySwitchTimer = setTimeout(function () {
                     zway.devices[10].instances[1].commandClasses[37].Get(function (level) {
                         console.log(room.name + ': switcher 1 callback ' + level);
+                        console.log(level);
 
                         room.switcher1 = ('' + level === 'true');
                         room.switcher1CallbackDone = true;
