@@ -174,8 +174,7 @@ var Room = function (settings) {
     };
 
     room.isStopAutomation = function () {
-        return room.isDoorClosed() && room.doorClosedAt < (new Date() - 5 * 60 * 1000) ||
-            !room.isDoorClosed() && room.doorOpenedAt > (new Date() - 5 * 60 * 1000)
+        return room.isDoorClosed() || !room.isDoorClosed() && room.doorOpenedAt > (new Date() - 1 * 60 * 1000)
     };
 
     room.isDoorClosed = function () {
