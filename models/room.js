@@ -7,7 +7,6 @@ var Room = function (settings) {
         settings = {};
     }
 
-
     room.start = function () {
         console.log(room.name + ': initialize room');
         room.autoSwitch = true;
@@ -20,6 +19,8 @@ var Room = function (settings) {
         room.subscribeToLuxSensor();
         room.subscribeToTemperatureSensor();
         room.subscribeToSwitcher();
+        room.subscribeToDoorSwitcher();
+
     };
 
     room.turnLampOn = function () {
@@ -57,7 +58,7 @@ var Room = function (settings) {
         console.log(room.name + ': receive data from motion sensor');
         if (level.value) {
             console.log(room.name + ': motion detect');
-            if (!room.illuminationIsOn && room.isDark && !room.isStopAutomation) {
+            if (!room.illuminationIsOn && room.isDark && !room.isStopAutomation()) {
                 room.turnLampOn();
             }
             if (room.isEmpty) {
@@ -96,57 +97,37 @@ var Room = function (settings) {
         }
     };
 
+
+    room.subscribeToDoorSwitcher = function () {
+        if (room.doorSwitcher) {
+            console.log(room.name + ': subscribe to door switch');
+            room.doorSwitcher.bind(function () {
+                room.onDoorSwitcherChange(this);
+            });
+        }
+    };
+
+
+    //devices[9].instances[0].commandClasses[48].data[10].level.value
+    room.onDoorSwitcherChange = function (level) {
+        console.log(room.name + ': door changed');
+        if (level.value) {
+            room.doorOpenedAt = new Date();
+            console.log(room.name + ': door opened');
+        } else {
+            room.doorClosedAt = new Date();
+            console.log(room.name + ': door closed');
+        }
+    };
+
     room.onSwitcherChange = function (level) {
         console.log(room.name + ': switcher changed ' + level);
         if (room.autoSwitch) {
 
-        } else if (room.manuallySwitch) {
-            console.log(room.name + ': switcher pressed manually ' + level);
-            room.switcher1CallbackDone = false;
-            room.switcher2CallbackDone = false;
-
-            if (!room.manuallySwitchTimer) {
-                room.manuallySwitchTimer = setTimeout(function () {
-                    zway.devices[10].instances[1].commandClasses[37].Get(function () {
-                        console.log(room.name + ': switcher 1 callback ' + this.level + ' ' + this.value + ' ' + this);
-
-                        room.switcher1 = zway.devices[10].instances[1].commandClasses[37].data.level.value;
-                        room.switcher1CallbackDone = true;
-                        room.afterSwitchersCallbacks();
-                    });
-                    zway.devices[10].instances[2].commandClasses[37].Get(function () {
-                        console.log(room.name + ': switcher 2 callback ' );
-
-                        room.switcher2 = zway.devices[10].instances[2].commandClasses[37].data.level.value;
-                        room.switcher2CallbackDone = true;
-                        room.afterSwitchersCallbacks();
-                    });
-                }, 3000);
-            }
-        }
-    };
-
-    room.afterSwitchersCallbacks = function(){
-        if (!room.switcher1CallbackDone || !room.switcher2CallbackDone){
-            return;
-        }
-        console.log(room.name + ': after switcher callbacks ' + room.switcher1 + ' ' + room.switcher2);
-
-        if (room.switcher2 === room.switcher1) {
-            room.isStopAutomation = true;
-            if (room.switcher2) {
-                room.turnLampOn();
-            } else {
-                room.turnLampOff();
-            }
         } else {
-            room.isStopAutomation = false;
+            console.log(room.name + ': switcher pressed manually ' + level);
         }
-        console.log(room.name + ': stop automation ' + room.isStopAutomation);
-
-        room.manuallySwitchTimer = null;
     };
-
 
     room.subscribeToSwitcher = function () {
         if (room.switcher) {
@@ -179,7 +160,7 @@ var Room = function (settings) {
     };
 
     room.onFirstMotionNear = function () {
-        if (room.isEmpty && room.isDark && !room.isStopAutomation) {
+        if (room.isEmpty && room.isDark && !room.isStopAutomation()) {
             room.turnLampOn();
             room.backlightAt = new Date();
         }
@@ -192,8 +173,22 @@ var Room = function (settings) {
         room.turnLampOff()
     };
 
+    room.isStopAutomation = function () {
+        return room.isDoorClosed() && room.doorClosedAt < (new Date() - 5 * 60 * 1000) ||
+            !room.isDoorClosed() && room.doorOpenedAt > (new Date() - 5 * 60 * 1000)
+    };
+
+    room.isDoorClosed = function () {
+        return room.doorOpenedAt < room.doorClosedAt;
+    };
+
     room.clockCycle = function () {
-        if (!room.isStopAutomation) {
+
+        if (room.isStopAutomation()) {
+            if (room.illuminationIsOn) {
+                room.turnLampOff();
+            }
+        } else {
             if (
                 !room.isEmpty && !room.isBacklight() &&
                 room.firstMotionNearAt &&
@@ -230,6 +225,8 @@ var Room = function (settings) {
             ) {
                 room.turnLampOff();
             }
+
+
         }
     };
 
@@ -239,13 +236,13 @@ var Room = function (settings) {
     };
 
 
-    room.manuallySwitch = settings.manuallySwitch;
     room.name = settings.name;
     room.lamp = settings.lamp;
     room.motionSensor = settings.motionSensor;
     room.luxSensor = settings.luxSensor;
     room.temperatureSensor = settings.temperatureSensor;
     room.switcher = settings.switcher;
+    room.doorSwitcher = settings.doorSwitcher;
     room.minLux = settings.minLux;
     room.emptyRoomTimeout = settings.timeout;
 
@@ -255,9 +252,11 @@ var Room = function (settings) {
     room.currentLux = 0;
     room.currentTemperature = 0;
     room.isEmpty = true;
-    room.motionIsNear = false;
     room.isDark = true;
     room.lastMotionAt = null;
     room.firstMotionNearAt = null;
+    room.doorOpenedAt = new Date(2);
+    room.doorClosedAt = new Date(1);
+
 };
 
