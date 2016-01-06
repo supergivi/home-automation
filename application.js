@@ -64,7 +64,8 @@ var corridor = new Room(
         temperatureSensor: zway.devices[3].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[4].instances[1].commandClasses[37].data.level,
         minLux: 50,
-        timeout: 120
+        timeout: 120,
+        doorSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level
     }
 );
 
@@ -78,7 +79,7 @@ var bigRoom = new Room(
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 8, // here percents/ not lux
         timeout: 300,
-        doorSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level
+        stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level
     }
 );
 

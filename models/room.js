@@ -22,6 +22,7 @@ var Room = function (settings) {
         room.subscribeToTemperatureSensor();
         room.subscribeToSwitcher();
         room.subscribeToDoorSwitcher();
+        room.subscribeToStopAutomationSwitcher();
 
     };
 
@@ -100,6 +101,28 @@ var Room = function (settings) {
     };
 
 
+    room.subscribeToStopAutomationSwitcher = function () {
+        if (room.stopAutomationSwitcher) {
+            console.log(room.name + ': subscribe to stop automation switch');
+            room.stopAutomationSwitcher.bind(function () {
+                room.onStopAutomationSwitcherChange(this);
+            });
+        }
+    };
+
+
+    room.onStopAutomationSwitcherChange = function (level) {
+        console.log(room.name + ': stop automation switcher changed');
+        if (level.value) {
+            room.automationStartedAt = new Date();
+            console.log(room.name + ': automation started');
+        } else {
+            room.automationStoppedAt = new Date();
+            console.log(room.name + ': automation ended');
+        }
+    };
+
+
     room.subscribeToDoorSwitcher = function () {
         if (room.doorSwitcher) {
             console.log(room.name + ': subscribe to door switch');
@@ -108,13 +131,11 @@ var Room = function (settings) {
             });
         }
     };
-
-
-    //devices[9].instances[0].commandClasses[48].data[10].level.value
     room.onDoorSwitcherChange = function (level) {
         console.log(room.name + ': door changed');
         if (level.value) {
             room.doorOpenedAt = new Date();
+            room.onMotionDetect({value: 255});
             console.log(room.name + ': door opened');
         } else {
             room.doorClosedAt = new Date();
@@ -176,11 +197,11 @@ var Room = function (settings) {
     };
 
     room.isStopAutomation = function () {
-        return room.isDoorClosed() && room.doorClosedAt < (new Date() - 1 * 60 * 1000) || !room.isDoorClosed() && room.doorOpenedAt > (new Date() - 1 * 60 * 1000)
+        return room.isAutomationSwitchOff() && room.automationStoppedAt < (new Date() - 2 * 60 * 1000) || !room.isAutomationSwitchOff() && room.automationStartedAt > (new Date() - 2 * 60 * 1000)
     };
 
-    room.isDoorClosed = function () {
-        return room.doorOpenedAt < room.doorClosedAt;
+    room.isAutomationSwitchOff = function () {
+        return room.automationStartedAt < room.automationStoppedAt;
     };
 
     room.clockCycle = function () {
@@ -243,6 +264,7 @@ var Room = function (settings) {
     room.temperatureSensor = settings.temperatureSensor;
     room.switcher = settings.switcher;
     room.doorSwitcher = settings.doorSwitcher;
+    room.stopAutomationSwitcher = settings.stopAutomationSwitcher;
     room.minLux = settings.minLux;
     room.emptyRoomTimeout = settings.timeout;
 
@@ -255,8 +277,8 @@ var Room = function (settings) {
     room.isDark = true;
     room.lastMotionAt = null;
     room.firstMotionNearAt = null;
-    room.doorOpenedAt = new Date(2);
-    room.doorClosedAt = new Date(1);
+    room.automationStartedAt = new Date(2);
+    room.automationStoppedAt = new Date(1);
 
 };
 
