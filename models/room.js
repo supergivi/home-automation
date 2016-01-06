@@ -11,9 +11,11 @@ var Room = function (settings) {
         console.log(room.name + ': initialize room');
         room.autoSwitch = true;
         clearTimeout(room.autoSwitchTimeout);
+
         room.autoSwitchTimeout = setTimeout(function () {
             room.autoSwitch = false;
         }, 10000);
+
         room.setEmpty();
         room.subscribeToMotionSensor();
         room.subscribeToLuxSensor();
@@ -174,7 +176,7 @@ var Room = function (settings) {
     };
 
     room.isStopAutomation = function () {
-        return room.isDoorClosed() || !room.isDoorClosed() && room.doorOpenedAt > (new Date() - 1 * 60 * 1000)
+        return room.isDoorClosed() && room.doorClosedAt < (new Date() - 1 * 60 * 1000) || !room.isDoorClosed() && room.doorOpenedAt > (new Date() - 1 * 60 * 1000)
     };
 
     room.isDoorClosed = function () {
@@ -231,9 +233,8 @@ var Room = function (settings) {
 
 
     room.isBacklight = function () {
-        return !!(room.backlightAt && room.backlightAt > (new Date() - 20000))
+        return !!(room.backlightAt && room.backlightAt > (new Date() - 20 * 1000))
     };
-
 
     room.name = settings.name;
     room.lamp = settings.lamp;
