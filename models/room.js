@@ -117,6 +117,9 @@ var Room = function (settings) {
             room.automationStartedAt = new Date();
             console.log(room.name + ': automation started');
         } else {
+            if (room.isStopAutomation) {
+                room.automationStartedAt = new Date(1);
+            }
             room.automationStoppedAt = new Date();
             console.log(room.name + ': automation ended');
         }
@@ -197,7 +200,9 @@ var Room = function (settings) {
     };
 
     room.isStopAutomation = function () {
-        return room.isAutomationSwitchOff() && room.automationStoppedAt < (new Date() - 2 * 60 * 1000) || !room.isAutomationSwitchOff() && room.automationStartedAt > (new Date() - 2 * 60 * 1000)
+        return room.isAutomationSwitchOff() && room.automationStoppedAt < (new Date() - 2 * 60 * 1000) ||
+            !room.isAutomationSwitchOff() && room.automationStartedAt > (new Date() - 2 * 60 * 1000)
+
     };
 
     room.isAutomationSwitchOff = function () {
