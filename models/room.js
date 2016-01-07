@@ -117,7 +117,7 @@ var Room = function (settings) {
             room.automationStartedAt = new Date();
             console.log(room.name + ': automation started');
         } else {
-            if (room.isStopAutomation) {
+            if (room.isStopAutomation()) {
                 room.automationStartedAt = new Date(1);
             } else {
                 room.automationStoppedAt = new Date();
