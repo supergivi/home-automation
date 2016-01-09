@@ -14,18 +14,18 @@ var Home = function (settings) {
         home.rooms.push(room);
     };
 
-    home.getLastMotion = function () {
-        var _lastMotionAt = new Date(1);
-        var _lastMotionRoom = {};
-        home.rooms.forEach(function (room) {
-            if (room.lastMotionAt > _lastMotionAt) {
-                _lastMotionAt = new Date(room.lastMotionAt.getTime());
-                _lastMotionRoom = room;
-            }
-        });
-        home.lastMotionAt = _lastMotionAt;
-        home.lastMotionRoom = _lastMotionRoom;
-    };
+    //home.getLastMotion = function () {
+    //    var _lastMotionAt = new Date(1);
+    //    var _lastMotionRoom = {};
+    //    home.rooms.forEach(function (room) {
+    //        if (room.lastMotionAt > _lastMotionAt) {
+    //            _lastMotionAt = new Date(room.lastMotionAt.getTime());
+    //            _lastMotionRoom = room;
+    //        }
+    //    });
+    //    home.lastMotionAt = _lastMotionAt;
+    //    home.lastMotionRoom = _lastMotionRoom;
+    //};
 
     home.start = function () {
         home.rooms.forEach(function (room) {
@@ -33,8 +33,8 @@ var Home = function (settings) {
         });
 
         home.interval = setInterval(function () {
-            home.getLastMotion();
-            console.log('last motion: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name);
+            //home.getLastMotion();
+            //console.log('last motion: ' + home.lastMotionAt + ' в ' + home.lastMotionRoom.name);
             home.rooms.forEach(function (room) {
                 room.clockCycle();
             });
@@ -42,15 +42,15 @@ var Home = function (settings) {
     };
 
 
-    home.turnLampsOn = function(){
-        home.rooms.forEach(function (room) {
-            room.illuminate();
-        });
-    };
-
-    home.turnLampsOff = function(){
-        home.rooms.forEach(function (room) {
-            room.turnOffLamp();
-        });
-    };
+    //home.turnLampsOn = function(){
+    //    home.rooms.forEach(function (room) {
+    //        room.illuminate();
+    //    });
+    //};
+    //
+    //home.turnLampsOff = function(){
+    //    home.rooms.forEach(function (room) {
+    //        room.turnOffLamp();
+    //    });
+    //};
 };
