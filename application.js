@@ -1,5 +1,5 @@
 executeFile('custom/models/home.js');
-executeFile('custom/models/room.js');
+executeFile('custom/models/room_advanced.js');
 executeFile('custom/models/probki.js');
 executeFile('custom/models/lamp.js');
 

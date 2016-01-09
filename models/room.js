@@ -218,9 +218,11 @@ var Room = function (settings) {
             }
         } else {
             if (
-                !room.isEmpty && !room.isBacklight() &&
+                !room.isEmpty &&
+                !room.isBacklight() &&
                 room.firstMotionNearAt &&
-                room.lastMotionAt && (room.lastMotionAt < new Date()) &&
+                room.lastMotionAt &&
+                (room.lastMotionAt < new Date()) &&
                 (room.firstMotionNearAt < (new Date() - (room.emptyRoomTimeout * 1000)))
             ) {
                 room.setEmpty();
@@ -246,12 +248,6 @@ var Room = function (settings) {
                 room.isDark
             ) {
                 room.turnLampOn();
-            }
-
-            if (
-                room.illuminationIsOn && !room.isDark
-            ) {
-                room.turnLampOff();
             }
 
 
@@ -285,6 +281,8 @@ var Room = function (settings) {
     room.firstMotionNearAt = null;
     room.automationStartedAt = new Date(2);
     room.automationStoppedAt = new Date(1);
+
+
 
 };
 
