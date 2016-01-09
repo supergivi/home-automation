@@ -9,6 +9,7 @@ var Room = function (settings) {
 
     room.start = function () {
         console.log(room.name + ': initialize room');
+        room.turnHeatOff();
         room.subscribeToMotionSensor();
         room.subscribeToLuxSensor();
         room.subscribeToTemperatureSensor();
@@ -30,6 +31,23 @@ var Room = function (settings) {
         room.pushLampOffLog(new Date())
     };
 
+    room.turnHeatOn = function () {
+        console.log(room.name + ': turn heat on');
+        if (room.heat) {
+            room.heat.Set(1);
+        }
+        room.pushHeatOnLog(new Date())
+    };
+
+
+    room.turnHeatOff = function () {
+        console.log(room.name + ': turn heat off');
+        if (room.heat) {
+            room.heat.Set(0);
+        }
+        room.pushHeatOffLog(new Date())
+    };
+
     room.pushLampOnLog = function (date) {
         room.lampOnLog.unshift(date);
         if (room.lampOnLog.length > 100) {
@@ -41,6 +59,20 @@ var Room = function (settings) {
         room.lampOffLog.unshift(date);
         if (room.lampOffLog.length > 100) {
             room.lampOffLog.length = 100;
+        }
+    };
+
+    room.pushHeatOnLog = function (date) {
+        room.heatOnLog.unshift(date);
+        if (room.heatOnLog.length > 100) {
+            room.heatOnLog.length = 100;
+        }
+    };
+
+    room.pushHeatOffLog = function (date) {
+        room.heatOffLog.unshift(date);
+        if (room.heatOffLog.length > 100) {
+            room.heatOffLog.length = 100;
         }
     };
 
@@ -273,6 +305,18 @@ var Room = function (settings) {
             room.turnLampOff();
         }
 
+        if (room.isFull() && room.currentTemperature < 23 && !room.isHeatOn()){
+            room.turnHeatOn();
+        }
+
+        if (room.isEmpty  && room.isHeatOn()) {
+            room.turnHeatOff();
+        }
+
+        if (room.currentTemperature > 23 && room.isHeatOn()){
+            room.turnHeatOff();
+        }
+
     };
 
     room.isEmpty = function () {
@@ -316,8 +360,13 @@ var Room = function (settings) {
         return room.lampOnLog[0] > room.lampOffLog[0];
     };
 
+
     room.isLampOff = function(){
       return !room.isLampOn();
+    };
+
+    room.isHeatOn = function () {
+        return room.heatOnLog[0] > room.heatOffLog[0];
     };
 
     room.isAutomationSwitchOn = function () {
@@ -338,6 +387,7 @@ var Room = function (settings) {
 
     room.name = settings.name;
     room.lamp = settings.lamp;
+    room.heat = settings.heat;
     room.motionSensor = settings.motionSensor;
     room.luxSensor = settings.luxSensor;
     room.temperatureSensor = settings.temperatureSensor;
@@ -354,6 +404,8 @@ var Room = function (settings) {
     room.currentTemperature = 0;
     room.lampOnLog = [new Date(1)];
     room.lampOffLog = [new Date(2)];
+    room.heatOnLog = [new Date(1)];
+    room.heatOffLog = [new Date(2)];
     room.motionNoDetectLog = [new Date(2)];
     room.motionDetectLog = [new Date(1)];
     room.automationSwitchOffLog = [new Date(1)];

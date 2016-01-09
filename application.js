@@ -10,7 +10,7 @@ var lamps = {
     wc: new Lamp([zway.devices[7].instances[2].SwitchBinary]),
     bathroom: new Lamp([zway.devices[7].instances[1].SwitchBinary]),
     corridor: new Lamp([zway.devices[4].instances[1].SwitchBinary]),
-    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary, zway.devices[10].instances[1].SwitchBinary, zway.devices[10].instances[2].SwitchBinary]),
+    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary, zway.devices[10].instances[1].SwitchBinary]),
     littleRoom: new Lamp([]),
     bigRoomFake: new Lamp([])
 
@@ -79,7 +79,8 @@ var bigRoom = new Room(
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 8, // here percents/ not lux
         timeout: 900,
-        stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level
+        stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level,
+        heat: zway.devices[10].instances[2].SwitchBinary
     }
 );
 
