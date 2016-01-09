@@ -309,7 +309,7 @@ var Room = function (settings) {
             room.turnHeatOn();
         }
 
-        if (room.isEmpty  && room.isHeatOn()) {
+        if (room.isEmpty()  && room.isHeatOn()) {
             room.turnHeatOff();
         }
 
