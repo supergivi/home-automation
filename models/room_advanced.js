@@ -269,6 +269,10 @@ var Room = function (settings) {
             room.turnLampOn();
         }
 
+        if (!room.isAutomationOn() && room.isLampOn()) {
+            room.turnLampOff();
+        }
+
     };
 
     room.isEmpty = function () {
@@ -297,6 +301,14 @@ var Room = function (settings) {
     };
 
     room.isAutomationOn = function () {
+        if (!room.isAutomationSwitchOn()){
+            return false;
+        }
+
+        if (room.isAutomationSwitchOn() && room.automationSwitchOnLog[0] > (new Date() - 2 * 60 * 1000)){
+            return false;
+        }
+
         return true;
     };
 
@@ -306,6 +318,10 @@ var Room = function (settings) {
 
     room.isLampOff = function(){
       return !room.isLampOn();
+    };
+
+    room.isAutomationSwitchOn = function () {
+        return room.automationSwitchOnLog[0] > room.automationSwitchOffLog[0];
     };
 
     room.callNeighbors = function(){
