@@ -314,11 +314,6 @@ var Room = function (settings) {
 
     room.currentLux = 0;
     room.currentTemperature = 0;
-    room.isEmpty = true;
-    room.lastMotionAt = null;
-    room.firstMotionNearAt = null;
-    room.automationStartedAt = new Date(2);
-    room.automationStoppedAt = new Date(1);
     room.lampOnLog = [new Date(1)];
     room.lampOffLog = [new Date(2)];
     room.motionNoDetectLog = [new Date(2)];
