@@ -305,7 +305,7 @@ var Room = function (settings) {
             room.turnLampOff();
         }
 
-        if (room.isFull() && room.currentTemperature < 23 && !room.isHeatOn()){
+        if (room.isFull() && room.currentTemperature < 21 && !room.isHeatOn()){
             room.turnHeatOn();
         }
 
@@ -313,7 +313,7 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
-        if (room.currentTemperature > 23 && room.isHeatOn()){
+        if (room.currentTemperature > 21 && room.isHeatOn()){
             room.turnHeatOff();
         }
 
@@ -324,6 +324,9 @@ var Room = function (settings) {
     };
 
     room.isFull = function(){
+        if (!room.isAutomationOn()){
+            return true;
+        }
         if (room.motionDetectLog[0] > room.motionNoDetectLog[0]){
             return true;
         }
