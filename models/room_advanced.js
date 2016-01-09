@@ -279,7 +279,11 @@ var Room = function (settings) {
         if (room.motionDetectLog[0] > room.motionNoDetectLog[0]){
             return true;
         }
-        return room.motionNoDetectLog[0] > (new Date() - (room.emptyRoomTimeout * 1000));
+        if (room.motionNearLog[0] > room.motionNoDetectLog[0] - 60 * 1000 ){
+            return room.motionNoDetectLog[0] > (new Date() - (room.emptyRoomTimeout * 1000));
+        }
+        return room.motionNoDetectLog[0] > (new Date() - (room.emptyRoomTimeout * 10 * 1000));
+
     };
 
     room.isBackLight = function () {
