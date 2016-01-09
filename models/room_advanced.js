@@ -125,16 +125,7 @@ var Room = function (settings) {
         }
     };
 
-    room.onMotionDetect = function (level) {
-        console.log(room.name + ': receive data from motion sensor');
-        if (level.value) {
-            console.log(room.name + ': motion detect');
-            room.pushMotionDetectLog(new Date())
-        } else {
-            console.log(room.name + ': motion not detect');
-            room.pushMotionNoDetectLog(new Date())
-        }
-    };
+
 
     room.subscribeToLuxSensor = function () {
         if (room.luxSensor) {
@@ -183,6 +174,20 @@ var Room = function (settings) {
         }
     };
 
+
+    room.onMotionDetect = function (level) {
+        console.log(room.name + ': receive data from motion sensor');
+        if (level.value) {
+            console.log(room.name + ': motion detect');
+            room.callNeighbors();
+            room.pushMotionDetectLog(new Date())
+        } else {
+            console.log(room.name + ': motion not detect');
+            room.pushMotionNoDetectLog(new Date())
+        }
+        room.clockCycle();
+    };
+
     room.onLuxChange = function (level) {
         if (!room.isLampOn()) {
             room.currentLux = level.value;
@@ -208,6 +213,7 @@ var Room = function (settings) {
         console.log(room.name + ': door changed');
         if (level.value) {
             console.log(room.name + ': door opened');
+            room.callNeighbors();
             room.pushDoorSwitcherOnLog(new Date());
         } else {
             console.log(room.name + ': door closed');
@@ -296,6 +302,18 @@ var Room = function (settings) {
 
     room.isLampOff = function(){
       return !room.isLampOn();
+    };
+
+    room.callNeighbors = function(){
+        if (room.isEmpty()) {
+            room.neighbors.forEach(function (neighbor) {
+                neighbor.onFirstMotionNear();
+            });
+        }
+
+        room.neighbors.forEach(function (neighbor) {
+            neighbor.onMotionNear();
+        });
     };
 
     room.name = settings.name;
