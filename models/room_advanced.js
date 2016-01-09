@@ -249,6 +249,8 @@ var Room = function (settings) {
     };
 
     room.clockCycle = function () {
+        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight());
+
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
         }
@@ -319,8 +321,8 @@ var Room = function (settings) {
     room.automationStoppedAt = new Date(1);
     room.lampOnLog = [new Date(1)];
     room.lampOffLog = [new Date(2)];
-    room.motionNoDetectLog = [new Date(1)];
-    room.motionDetectLog = [new Date(2)];
+    room.motionNoDetectLog = [new Date(2)];
+    room.motionDetectLog = [new Date(1)];
     room.automationSwitchOffLog = [new Date(1)];
     room.automationSwitchOnLog = [new Date(2)];
     room.doorSwitcherOffLog = [new Date(1)];
