@@ -77,7 +77,7 @@ var bigRoom = new Room(
         luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
         temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
-        minLux: 8, // here percents/ not lux
+        minLux: 13, // here percents/ not lux
         timeout: 900,
         stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level,
         heat: zway.devices[10].instances[2].SwitchBinary
