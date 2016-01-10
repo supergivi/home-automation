@@ -305,7 +305,7 @@ var Room = function (settings) {
             room.turnLampOff();
         }
 
-        if (room.isFull() && room.currentTemperature < 23 && !room.isHeatOn()){
+        if (room.isFull() && room.currentTemperature < room.optimumTemperature() && !room.isHeatOn()){
             room.turnHeatOn();
         }
 
@@ -313,7 +313,7 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
-        if (room.currentTemperature > 23 && room.isHeatOn()){
+        if (room.currentTemperature > room.optimumTemperature() && room.isHeatOn()){
             room.turnHeatOff();
         }
 
