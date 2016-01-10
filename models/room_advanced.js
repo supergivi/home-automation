@@ -390,9 +390,9 @@ var Room = function (settings) {
 
     room.optimumTemperature = function (){
         if (room.isAutomationOn()){
-            return 21;
+            return 24;
         } else {
-            return 24
+            return 21
         }
     };
 
