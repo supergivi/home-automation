@@ -158,7 +158,6 @@ var Room = function (settings) {
     };
 
 
-
     room.subscribeToLuxSensor = function () {
         if (room.luxSensor) {
             console.log(room.name + ': subscribe to lux sensor');
@@ -305,15 +304,15 @@ var Room = function (settings) {
             room.turnLampOff();
         }
 
-        if (room.isFull() && room.currentTemperature < room.optimumTemperature() && !room.isHeatOn()){
+        if (room.isFull() && room.currentTemperature < room.optimumTemperature() && !room.isHeatOn()) {
             room.turnHeatOn();
         }
 
-        if (room.isEmpty()  && room.isHeatOn()) {
+        if (room.isEmpty() && room.isHeatOn()) {
             room.turnHeatOff();
         }
 
-        if (room.currentTemperature > room.optimumTemperature() && room.isHeatOn()){
+        if (room.currentTemperature > room.optimumTemperature() && room.isHeatOn()) {
             room.turnHeatOff();
         }
 
@@ -323,14 +322,14 @@ var Room = function (settings) {
         return !room.isFull();
     };
 
-    room.isFull = function(){
-        if (!room.isAutomationOn()){
+    room.isFull = function () {
+        if (!room.isAutomationOn()) {
             return true;
         }
-        if (room.motionDetectLog[0] > room.motionNoDetectLog[0]){
+        if (room.motionDetectLog[0] > room.motionNoDetectLog[0]) {
             return true;
         }
-        if (room.motionNearLog[0] > room.motionNoDetectLog[0] - 60 * 1000 ){
+        if (room.motionNearLog[0] > room.motionNoDetectLog[0] - 60 * 1000) {
             return room.motionNoDetectLog[0] > (new Date() - (room.emptyRoomTimeout * 1000));
         }
         return room.motionNoDetectLog[0] > (new Date() - (room.emptyRoomTimeout * 10 * 1000));
@@ -348,11 +347,11 @@ var Room = function (settings) {
     };
 
     room.isAutomationOn = function () {
-        if (!room.isAutomationSwitchOn()){
+        if (!room.isAutomationSwitchOn()) {
             return false;
         }
 
-        if (room.isAutomationSwitchOn() && room.automationSwitchOnLog[0] > (new Date() - 2 * 60 * 1000)){
+        if (room.isAutomationSwitchOn() && room.automationSwitchOnLog[0] > (new Date() - 2 * 60 * 1000)) {
             return false;
         }
 
@@ -364,8 +363,8 @@ var Room = function (settings) {
     };
 
 
-    room.isLampOff = function(){
-      return !room.isLampOn();
+    room.isLampOff = function () {
+        return !room.isLampOn();
     };
 
     room.isHeatOn = function () {
@@ -376,7 +375,7 @@ var Room = function (settings) {
         return room.automationSwitchOnLog[0] > room.automationSwitchOffLog[0];
     };
 
-    room.callNeighbors = function(){
+    room.callNeighbors = function () {
         if (room.isEmpty()) {
             room.neighbors.forEach(function (neighbor) {
                 neighbor.onFirstMotionNear();
@@ -388,11 +387,16 @@ var Room = function (settings) {
         });
     };
 
-    room.optimumTemperature = function (){
-        if (room.isAutomationOn()){
+    room.optimumTemperature = function () {
+        var time = new Date();
+        if (room.isAutomationOn()) {
             return 23;
         } else {
-            return 20
+            if (time.getHours() >= 2 && time.getHours() <= 10) {
+                return 20;
+            } else {
+                return 23;
+            }
         }
     };
 
