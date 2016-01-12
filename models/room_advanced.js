@@ -390,12 +390,12 @@ var Room = function (settings) {
     room.optimumTemperature = function () {
         var time = new Date();
         if (room.isAutomationOn()) {
-            return 23;
+            return 22;
         } else {
             if (time.getHours() >= 2 && time.getHours() <= 10) {
                 return 20;
             } else {
-                return 23;
+                return 22;
             }
         }
     };
