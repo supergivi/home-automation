@@ -298,7 +298,7 @@ var Room = function (settings) {
     };
 
     room.clockCycle = function () {
-        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight());
+        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + 'average temperature ' + room.averageTemperature());
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
@@ -415,7 +415,7 @@ var Room = function (settings) {
     };
 
     room.averageTemperature = function(){
-        return (room.currentTemperature + room.currentTemperature2) / 2
+        return ((room.currentTemperature + room.currentTemperature2) / 2);
     };
 
     room.name = settings.name;
