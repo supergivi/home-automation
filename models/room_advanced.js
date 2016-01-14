@@ -203,6 +203,12 @@ var Room = function (settings) {
                 room.onTemperatureChange(this)
             });
         }
+        if (room.temperatureSensor2) {
+            console.log(room.name + ': subscribe to temperature sensor2');
+            room.temperatureSensor2.bind(function () {
+                room.onTemperatureChange2(this)
+            });
+        }
     };
 
 
@@ -272,6 +278,12 @@ var Room = function (settings) {
         room.clockCycle();
     };
 
+    room.onTemperatureChange2 = function (level) {
+        console.log(room.name + ': temperature2 changed');
+        room.currentTemperature2 = level.value;
+        room.clockCycle();
+    };
+
 
     room.onMotionNear = function () {
         console.log(room.name + ': detect near motion');
@@ -304,7 +316,7 @@ var Room = function (settings) {
             room.turnLampOff();
         }
 
-        if (room.isFull() && room.currentTemperature < room.optimumTemperature() && !room.isHeatOn()) {
+        if (room.isFull() && room.averageTemperature() < room.optimumTemperature() && !room.isHeatOn()) {
             room.turnHeatOn();
         }
 
@@ -312,7 +324,7 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
-        if (room.currentTemperature > room.optimumTemperature() && room.isHeatOn()) {
+        if (room.averageTemperature() > room.optimumTemperature() && room.isHeatOn()) {
             room.turnHeatOff();
         }
 
@@ -390,16 +402,20 @@ var Room = function (settings) {
     room.optimumTemperature = function () {
         var time = new Date();
         if (room.isAutomationOn()) {
-            return 23;
+            return 23.5;
         } else {
             if (time.getHours() >= 2 && time.getHours() <= 10) {
                 return 20;
             } else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
                 return 24;
             } else {
-                return 23;
+                return 23.5;
             }
         }
+    };
+
+    room.averageTemperature = function(){
+        return (room.currentTemperature + room.currentTemperature2) / 2
     };
 
     room.name = settings.name;
@@ -408,6 +424,8 @@ var Room = function (settings) {
     room.motionSensor = settings.motionSensor;
     room.luxSensor = settings.luxSensor;
     room.temperatureSensor = settings.temperatureSensor;
+    room.temperatureSensor2 = settings.temperatureSensor2;
+
     room.switcher = settings.switcher;
     room.doorSwitcher = settings.doorSwitcher;
     room.stopAutomationSwitcher = settings.stopAutomationSwitcher;
@@ -419,6 +437,8 @@ var Room = function (settings) {
 
     room.currentLux = 0;
     room.currentTemperature = 0;
+    room.currentTemperature2 = 0;
+
     room.lampOnLog = [new Date(1)];
     room.lampOffLog = [new Date(2)];
     room.heatOnLog = [new Date(1)];
