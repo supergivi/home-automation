@@ -302,6 +302,7 @@ var Room = function (settings) {
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
+            room.condStatus = true;
         }
 
         if (room.isAutomationOn() && room.isLampOn() && room.isEmpty() && !room.isBackLight()) {
@@ -324,6 +325,10 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
+        if (room.isEmpty() && room.isCondOn()){
+            room.turnCondOff();
+        }
+
         if (room.averageTemperature() > room.optimumTemperature() && room.isHeatOn()) {
             room.turnHeatOff();
         }
@@ -332,6 +337,22 @@ var Room = function (settings) {
 
     room.isEmpty = function () {
         return !room.isFull();
+    };
+
+    room.isCondOn = function(){
+       return room.condStatus;
+    };
+
+    room.turnCondOff = function(){
+        [1,3000, 10000].forEach(function(time){
+            setTimeout(function(){
+                http.request({
+                    url: room.irBlaster + 'code=cond_off&rand=' + new Date().getTime(),
+                    method: 'GET',
+                    async: true
+                });
+            }, time);
+        });
     };
 
     room.isFull = function () {
@@ -421,6 +442,7 @@ var Room = function (settings) {
     room.name = settings.name;
     room.lamp = settings.lamp;
     room.heat = settings.heat;
+    room.irBlaster = settings.irBlaster;
     room.motionSensor = settings.motionSensor;
     room.luxSensor = settings.luxSensor;
     room.temperatureSensor = settings.temperatureSensor;
