@@ -22,7 +22,7 @@ var kitchen = new Room(
         lamp: lamps.kitchen,
         motionSensor: zway.devices[2].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[2].instances[0].commandClasses[49].data[3].val,
-        temperatureSensor: zway.devices[2].instances[0].commandClasses[49].data[1].val,
+        temperatureSensors: [zway.devices[2].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[4].instances[2].commandClasses[37].data.level,
         minLux: 100,
         timeout: 300
@@ -35,7 +35,7 @@ var wc = new Room(
         lamp: lamps.wc,
         motionSensor: zway.devices[5].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
-        temperatureSensor: zway.devices[5].instances[0].commandClasses[49].data[1].val,
+        temperatureSensors: [zway.devices[5].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[7].instances[2].commandClasses[37].data.level,
         minLux: 100,
         timeout: 120
@@ -48,7 +48,7 @@ var bathroom = new Room(
         lamp: lamps.bathroom,
         motionSensor: zway.devices[6].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[6].instances[0].commandClasses[49].data[3].val,
-        temperatureSensor: zway.devices[6].instances[0].commandClasses[49].data[1].val,
+        temperatureSensors: [zway.devices[6].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[7].instances[1].commandClasses[37].data.level,
         minLux: 100,
         timeout: 120
@@ -61,7 +61,7 @@ var corridor = new Room(
         lamp: lamps.corridor,
         motionSensor: zway.devices[3].instances[0].commandClasses[48].data[1].level,
         luxSensor: zway.devices[3].instances[0].commandClasses[49].data[3].val,
-        temperatureSensor: zway.devices[3].instances[0].commandClasses[49].data[1].val,
+        temperatureSensors: [zway.devices[3].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[4].instances[1].commandClasses[37].data.level,
         minLux: 50,
         timeout: 120,
@@ -75,8 +75,7 @@ var bigRoom = new Room(
         lamp: lamps.bigRoom,
         motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
         luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
-        temperatureSensor: zway.devices[9].instances[0].commandClasses[49].data[1].val,
-        temperatureSensor2: zway.devices[8].instances[0].commandClasses[49].data[1].val,
+        temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
         irBlaster: 'http://esp8266.local/ir?',
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 2, // here percents/ not lux
@@ -92,7 +91,7 @@ var littleRoom = new Room(
         lamp: lamps.littleRoom,
         motionSensor: zway.devices[8].instances[0].commandClasses[48].data[12].level,
         luxSensor: zway.devices[8].instances[0].commandClasses[49].data[3].val,
-        temperatureSensor: zway.devices[8].instances[0].commandClasses[49].data[1].val,
+        temperatureSensors: [zway.devices[8].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[10].instances[0].commandClasses[37].data.level,
         minLux: 8, // here percents/ not lux
         timeout: 300,

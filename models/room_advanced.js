@@ -197,18 +197,15 @@ var Room = function (settings) {
     };
 
     room.subscribeToTemperatureSensor = function () {
-        if (room.temperatureSensor) {
-            console.log(room.name + ': subscribe to temperature sensor');
-            room.temperatureSensor.bind(function () {
-                room.onTemperatureChange(this)
+        if (Object.prototype.toString.call(room.temperatureSensors) === '[object Array]') {
+            room.temperatureSensors.forEach(function (sensor, index) {
+                console.log(room.name + ': subscribe to temperature sensor');
+                sensor.bind(function () {
+                    room.onTemperatureChange(index, this)
+                });
             });
         }
-        if (room.temperatureSensor2) {
-            console.log(room.name + ': subscribe to temperature sensor2');
-            room.temperatureSensor2.bind(function () {
-                room.onTemperatureChange2(this)
-            });
-        }
+
     };
 
 
@@ -272,17 +269,12 @@ var Room = function (settings) {
     };
 
 
-    room.onTemperatureChange = function (level) {
+    room.onTemperatureChange = function (index, level) {
         console.log(room.name + ': temperature changed');
-        room.currentTemperature = level.value;
+        room.currentTemperature[index] = level.value;
         room.clockCycle();
     };
 
-    room.onTemperatureChange2 = function (level) {
-        console.log(room.name + ': temperature2 changed');
-        room.currentTemperature2 = level.value;
-        room.clockCycle();
-    };
 
 
     room.onMotionNear = function () {
@@ -298,7 +290,7 @@ var Room = function (settings) {
     };
 
     room.clockCycle = function () {
-        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + 'average temperature ' + room.averageTemperature());
+        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature());
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
@@ -317,7 +309,7 @@ var Room = function (settings) {
             room.turnLampOff();
         }
 
-        if (room.isFull() && room.averageTemperature() < room.optimumTemperature() && !room.isHeatOn()) {
+        if (room.isFull() && room.averageTemperature() && room.averageTemperature() < room.optimumTemperature() && !room.isHeatOn()) {
             room.turnHeatOn();
         }
 
@@ -325,11 +317,11 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
-        if (room.isEmpty() && room.isCondOn()){
+        if (room.isEmpty() && room.isCondOn()) {
             room.turnCondOff();
         }
 
-        if (room.averageTemperature() > room.optimumTemperature() && room.isHeatOn()) {
+        if (room.averageTemperature() && room.averageTemperature() > room.optimumTemperature() && room.isHeatOn()) {
             room.turnHeatOff();
         }
 
@@ -339,13 +331,14 @@ var Room = function (settings) {
         return !room.isFull();
     };
 
-    room.isCondOn = function(){
-       return room.condStatus;
+    room.isCondOn = function () {
+        return room.condStatus;
     };
 
-    room.turnCondOff = function(){
-        [1,3000, 10000].forEach(function(time){
-            setTimeout(function(){
+    room.turnCondOff = function () {
+        room.condStatus = false;
+        [1, 3000, 10000].forEach(function (time) {
+            setTimeout(function () {
                 http.request({
                     url: room.irBlaster + 'code=cond_off&rand=' + new Date().getTime(),
                     method: 'GET',
@@ -435,8 +428,16 @@ var Room = function (settings) {
         }
     };
 
-    room.averageTemperature = function(){
-        return ((room.currentTemperature + room.currentTemperature2) / 2);
+    room.averageTemperature = function () {
+        var temps = 0;
+        room.currentTemperature.forEach(function (temp) {
+            temps += temp;
+        });
+        if (room.currentTemperature.length) {
+            return temps / room.currentTemperature.length;
+        }
+
+        return false
     };
 
     room.name = settings.name;
@@ -445,8 +446,7 @@ var Room = function (settings) {
     room.irBlaster = settings.irBlaster;
     room.motionSensor = settings.motionSensor;
     room.luxSensor = settings.luxSensor;
-    room.temperatureSensor = settings.temperatureSensor;
-    room.temperatureSensor2 = settings.temperatureSensor2;
+    room.temperatureSensors = settings.temperatureSensors;
 
     room.switcher = settings.switcher;
     room.doorSwitcher = settings.doorSwitcher;
@@ -458,8 +458,7 @@ var Room = function (settings) {
     //Defaults
 
     room.currentLux = 0;
-    room.currentTemperature = 0;
-    room.currentTemperature2 = 0;
+    room.currentTemperature = [];
 
     room.lampOnLog = [new Date(1)];
     room.lampOffLog = [new Date(2)];
