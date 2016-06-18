@@ -325,6 +325,16 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
+        if (room.isFull() && room.optimumTemperature() === 20 && room.condStatus !== '20auto'){
+            room.condStatus = '20auto';
+            room.irBlasterSend('cond_20_auto_auto_all');
+        }
+
+        if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== '23auto'){
+            room.condStatus = '23auto';
+            room.irBlasterSend('cond_23_auto_auto_all');
+        }
+
     };
 
     room.isEmpty = function () {
@@ -337,10 +347,15 @@ var Room = function (settings) {
 
     room.turnCondOff = function () {
         room.condStatus = false;
-        [1, 3000, 10000].forEach(function (time) {
+        room.irBlasterSend('cond_off')
+    };
+
+
+    room.irBlasterSend = function (command) {
+        [1, 10000].forEach(function (time) {
             setTimeout(function () {
                 http.request({
-                    url: room.irBlaster + 'code=cond_off&rand=' + new Date().getTime(),
+                    url: room.irBlaster + 'code=' + command + '&rand=' + new Date().getTime(),
                     method: 'GET',
                     async: true
                 });
@@ -416,14 +431,14 @@ var Room = function (settings) {
     room.optimumTemperature = function () {
         var time = new Date();
         if (room.isAutomationOn()) {
-            return 23.5;
+            return 23;
         } else {
             if (time.getHours() >= 2 && time.getHours() <= 10) {
                 return 20;
-            } else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
-                return 24;
+            //} else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
+            //    return 24;
             } else {
-                return 23.5;
+                return 23;
             }
         }
     };
