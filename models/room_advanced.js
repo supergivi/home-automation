@@ -330,15 +330,41 @@ var Room = function (settings) {
             room.irBlasterSend('cond_20_auto_auto_all');
         }
 
-        if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== 'heat' && room.averageTemperature() &&  room.averageTemperature() < 23.5 ){
-            room.condStatus = 'heat';
-            room.irBlasterSend('ond_30_heat_max_all');
+
+
+        if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()){
+            if (room.averageTemperature() < 23 && room.condStatus !== 'heat'){
+                room.condStatus = 'heat';
+                room.irBlasterSend('ond_30_heat_max_all');
+            } else if (room.averageTemperature() > 24 && room.condStatus !== 'cool'){
+                room.condStatus = 'cool';
+                room.irBlasterSend('cond_16_cool_max_all');
+            } else if (room.averageTemperature() > 23 && room.averageTemperature() < 24 && (room.condStatus === 'heat' || room.condStatus === 'cool')){
+                room.condStatus = false;
+                room.irBlasterSend('cond_off');
+            }
+
+
         }
 
-        if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus === 'heat' && room.averageTemperature() && room.averageTemperature() > 24){
-            room.condStatus = false;
-            room.irBlasterSend('cond_off');
-        }
+
+
+        //
+        //if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== 'heat' && room.averageTemperature() &&  room.averageTemperature() < 23.5 ){
+        //    room.condStatus = 'heat';
+        //    room.irBlasterSend('ond_30_heat_max_all');
+        //}
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus === 'heat' && room.averageTemperature() && room.averageTemperature() > 24){
+        //    room.condStatus = false;
+        //    room.irBlasterSend('cond_off');
+        //}
         //if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== '23auto' && room.averageTemperature() && (room.averageTemperature() > 23.5 || room.averageTemperature() < 22.5) ){
         //    room.condStatus = '23auto';
         //    room.irBlasterSend('cond_23_auto_auto_all');
