@@ -330,9 +330,14 @@ var Room = function (settings) {
             room.irBlasterSend('cond_20_auto_auto_all');
         }
 
-        if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== '23auto'){
+        if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== '23auto' && room.averageTemperature() && (room.averageTemperature() > 23.5 || room.averageTemperature() < 22.5) ){
             room.condStatus = '23auto';
             room.irBlasterSend('cond_23_auto_auto_all');
+        }
+
+        if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus === '23auto' && room.averageTemperature() && room.averageTemperature() > 22.6 && room.averageTemperature() < 23.4){
+            room.condStatus = false;
+            room.irBlasterSend('cond_off');
         }
 
     };
@@ -342,7 +347,7 @@ var Room = function (settings) {
     };
 
     room.isCondOn = function () {
-        return room.condStatus;
+        return !!room.condStatus;
     };
 
     room.turnCondOff = function () {
@@ -392,7 +397,7 @@ var Room = function (settings) {
             return false;
         }
 
-        if (room.isAutomationSwitchOn() && room.automationSwitchOnLog[0] > (new Date() - 2 * 60 * 1000)) {
+        if (room.isAutomationSwitchOn() && room.automationSwitchOnLog[0] > (new Date() - 5 * 60 * 1000)) {
             return false;
         }
 
