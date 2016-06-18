@@ -294,7 +294,6 @@ var Room = function (settings) {
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
-            room.condStatus = true;
         }
 
         if (room.isAutomationOn() && room.isLampOn() && room.isEmpty() && !room.isBackLight()) {
@@ -325,10 +324,6 @@ var Room = function (settings) {
             room.turnHeatOff();
         }
 
-        if (room.isFull() && room.optimumTemperature() === 20 && room.condStatus !== '20auto'){
-            room.condStatus = '20auto';
-            room.irBlasterSend('cond_20_auto_auto_all');
-        }
 
 
 
