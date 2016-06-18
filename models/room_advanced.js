@@ -347,7 +347,10 @@ var Room = function (settings) {
 
         }
 
-
+        if (room.isFull() && room.optimumTemperature() === 20 && room.condStatus !== 'night'){
+            room.condStatus = 'night';
+            room.irBlasterSend('cond_20_auto_auto_all');
+        }
 
         //
         //if (room.isFull() && room.optimumTemperature() === 23 && room.condStatus !== 'heat' && room.averageTemperature() &&  room.averageTemperature() < 23.5 ){
@@ -392,15 +395,17 @@ var Room = function (settings) {
 
 
     room.irBlasterSend = function (command) {
-        [1, 10000].forEach(function (time) {
-            setTimeout(function () {
-                http.request({
-                    url: room.irBlaster + 'code=' + command + '&rand=' + new Date().getTime(),
-                    method: 'GET',
-                    async: true
-                });
-            }, time);
-        });
+        if (room.irBlaster) {
+            [1, 10000].forEach(function (time) {
+                setTimeout(function () {
+                    http.request({
+                        url: room.irBlaster + 'code=' + command + '&rand=' + new Date().getTime(),
+                        method: 'GET',
+                        async: true
+                    });
+                }, time);
+            });
+        }
     };
 
     room.isFull = function () {
