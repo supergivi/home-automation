@@ -330,7 +330,7 @@ var Room = function (settings) {
         if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()){
             if (room.averageTemperature() < 23 && room.condStatus !== 'heat'){
                 room.condStatus = 'heat';
-                room.irBlasterSend('ond_30_heat_max_all');
+                room.irBlasterSend('cond_30_heat_max_all');
             } else if (room.averageTemperature() > 24 && room.condStatus !== 'cool'){
                 room.condStatus = 'cool';
                 room.irBlasterSend('cond_16_cool_max_all');
@@ -347,7 +347,7 @@ var Room = function (settings) {
         if (room.isFull() && room.optimumTemperature() === 20 && room.averageTemperature()){
             if (room.averageTemperature() < 19 && room.condStatus !== 'heat'){
                 room.condStatus = 'heat';
-                room.irBlasterSend('ond_30_heat_max_all');
+                room.irBlasterSend('cond_30_heat_max_all');
             } else if (room.averageTemperature() > 22 && room.condStatus !== 'cool'){
                 room.condStatus = 'cool';
                 room.irBlasterSend('cond_16_cool_max_all');
