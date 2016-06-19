@@ -507,7 +507,6 @@ var Room = function (settings) {
 
     //Defaults
 
-    room.currentLux = 0;
     room.currentTemperature = [];
 
     room.lampOnLog = [new Date(1)];

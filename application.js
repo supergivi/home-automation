@@ -75,7 +75,9 @@ var bigRoom = new Room(
         lamp: lamps.bigRoom,
         motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
         luxSensor: zway.devices[9].instances[0].commandClasses[49].data[3].val,
-        temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
+        //temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
+        temperatureSensors: [ zway.devices[8].instances[0].commandClasses[49].data[1].val],
+
         irBlaster: 'http://esp8266.local/ir?',
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 2, // here percents/ not lux
