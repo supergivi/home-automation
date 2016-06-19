@@ -205,7 +205,6 @@ var Room = function (settings) {
                 });
             });
         }
-
     };
 
 
