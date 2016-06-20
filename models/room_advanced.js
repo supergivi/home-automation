@@ -327,10 +327,10 @@ var Room = function (settings) {
             if (room.averageTemperature() < 22.5 && room.condStatus !== 'heat') {
                 room.condStatus = 'heat';
                 room.irBlasterSend('cond_30_heat_max_all');
-            } else if (room.averageTemperature() > 24.5 && room.condStatus !== 'cool') {
+            } else if (room.averageTemperature() > 23.5 && room.condStatus !== 'cool') {
                 room.condStatus = 'cool';
                 room.irBlasterSend('cond_16_cool_max_all');
-            } else if (room.averageTemperature() > 23 && room.averageTemperature() < 24 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
+            } else if (room.averageTemperature() > 22.8 && room.averageTemperature() < 23.2 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
             }
