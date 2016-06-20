@@ -20,7 +20,7 @@ var kitchen = new Room(
     {
         name: 'kitchen',
         lamp: lamps.kitchen,
-        motionSensor: zway.devices[2].instances[0].commandClasses[48].data[1].level,
+        motionSensors: [ zway.devices[2].instances[0].commandClasses[48].data[1].level],
         luxSensor: zway.devices[2].instances[0].commandClasses[49].data[3].val,
         temperatureSensors: [zway.devices[2].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[4].instances[2].commandClasses[37].data.level,
@@ -33,7 +33,7 @@ var wc = new Room(
     {
         name: 'wc',
         lamp: lamps.wc,
-        motionSensor: zway.devices[8].instances[0].commandClasses[48].data[12].level,
+        motionSensors: [zway.devices[8].instances[0].commandClasses[48].data[12].level],
         luxSensor: zway.devices[8].instances[0].commandClasses[49].data[3].val,
         temperatureSensors: [ zway.devices[8].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[7].instances[2].commandClasses[37].data.level,
@@ -59,7 +59,7 @@ var bathroom = new Room(
     {
         name: 'bathroom',
         lamp: lamps.bathroom,
-        motionSensor: zway.devices[6].instances[0].commandClasses[48].data[1].level,
+        motionSensors: [ zway.devices[6].instances[0].commandClasses[48].data[1].level],
         luxSensor: zway.devices[6].instances[0].commandClasses[49].data[3].val,
         temperatureSensors: [zway.devices[6].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[7].instances[1].commandClasses[37].data.level,
@@ -72,7 +72,7 @@ var corridor = new Room(
     {
         name: 'corridor',
         lamp: lamps.corridor,
-        motionSensor: zway.devices[3].instances[0].commandClasses[48].data[1].level,
+        motionSensors: [ zway.devices[3].instances[0].commandClasses[48].data[1].level],
         luxSensor: zway.devices[3].instances[0].commandClasses[49].data[3].val,
         temperatureSensors: [zway.devices[3].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[4].instances[1].commandClasses[37].data.level,
@@ -86,7 +86,7 @@ var bigRoom = new Room(
     {
         name: 'big room',
         lamp: lamps.bigRoom,
-        motionSensor: zway.devices[9].instances[0].commandClasses[48].data[12].level,
+        motionSensors: [ zway.devices[9].instances[0].commandClasses[48].data[12].level, zway.devices[5].instances[0].commandClasses[48].data[1].level],
         luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
         //temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
         temperatureSensors: [zway.devices[5].instances[0].commandClasses[49].data[1].val],
@@ -114,6 +114,7 @@ var bigRoom = new Room(
 //
 //    }
 //);
+
 home.addRoom(wc);
 home.addRoom(bathroom);
 home.addRoom(kitchen);

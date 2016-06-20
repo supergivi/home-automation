@@ -149,10 +149,13 @@ var Room = function (settings) {
 
 
     room.subscribeToMotionSensor = function () {
-        console.log(room.name + ': subscribe to motion sensor');
-        if (room.motionSensor) {
-            room.motionSensor.bind(function () {
-                room.onMotionDetect(this)
+        if (Object.prototype.toString.call(room.motionSensors) === '[object Array]') {
+            console.log(room.name + ': subscribe to motion sensors');
+
+            room.motionSensors.forEach(function(sensor){
+                sensor.bind(function () {
+                    room.onMotionDetect(this)
+                });
             });
         }
     };
@@ -493,7 +496,7 @@ var Room = function (settings) {
     room.lamp = settings.lamp;
     room.heat = settings.heat;
     room.irBlaster = settings.irBlaster;
-    room.motionSensor = settings.motionSensor;
+    room.motionSensors = settings.motionSensors;
     room.luxSensor = settings.luxSensor;
     room.temperatureSensors = settings.temperatureSensors;
 
