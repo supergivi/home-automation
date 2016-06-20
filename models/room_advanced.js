@@ -215,10 +215,19 @@ var Room = function (settings) {
         console.log(room.name + ': receive data from motion sensor');
         if (level.value) {
             console.log(room.name + ': motion detect');
+            room.motionStack += 1;
+            if (room.motionStack > room.motionSensors.length) {
+                room.motionStack = 1;
+            }
             room.callNeighbors();
             room.pushMotionDetectLog(new Date())
         } else {
             console.log(room.name + ': motion not detect');
+            room.motionStack -= 1;
+            if (room.motionStack < 0){
+                room.motionStack = 0;
+            }
+
             room.pushMotionNoDetectLog(new Date())
         }
         room.clockCycle();
@@ -333,7 +342,10 @@ var Room = function (settings) {
             } else if (room.averageTemperature() > 23.5 && room.condStatus !== 'cool') {
                 room.condStatus = 'cool';
                 room.irBlasterSend('cond_16_cool_max_all');
-            } else if (room.averageTemperature() > 22.8 && room.averageTemperature() < 23.2 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
+            } else if (room.averageTemperature() > 23.2 && room.condStatus === 'heat') {
+                room.condStatus = false;
+                room.irBlasterSend('cond_off');
+            } else if (room.averageTemperature() < 22.8 && room.condStatus === 'cool') {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
             }
@@ -343,16 +355,28 @@ var Room = function (settings) {
 
 
         if (room.isFull() && room.optimumTemperature() === 20 && room.averageTemperature()) {
-            if (room.averageTemperature() < 19 && room.condStatus !== 'heat') {
+            if (room.averageTemperature() < 19.5 && room.condStatus !== 'heat') {
                 room.condStatus = 'heat';
                 room.irBlasterSend('cond_30_heat_max_all');
-            } else if (room.averageTemperature() > 22 && room.condStatus !== 'cool') {
+            } else if (room.averageTemperature() > 21 && room.condStatus !== 'cool') {
                 room.condStatus = 'cool';
                 room.irBlasterSend('cond_16_cool_max_all');
-            } else if (room.averageTemperature() > 20 && room.averageTemperature() < 21 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
+            } else if (room.averageTemperature() > 20.5 && room.condStatus === 'heat') {
+                room.condStatus = false;
+                room.irBlasterSend('cond_off');
+            } else if (room.averageTemperature() < 20 && room.condStatus === 'cool') {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
             }
+
+
+
+
+
+            //else if (room.averageTemperature() > 20 && room.averageTemperature() < 21 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
+            //    room.condStatus = false;
+            //    room.irBlasterSend('cond_off');
+            //}
         }
 
 
@@ -402,6 +426,9 @@ var Room = function (settings) {
 
     room.isFull = function () {
         if (!room.isAutomationOn()) {
+            return true;
+        }
+        if (room.motionStack > 0) {
             return true;
         }
         if (room.motionDetectLog[0] > room.motionNoDetectLog[0]) {
@@ -524,7 +551,8 @@ var Room = function (settings) {
     room.switcherOffLog = [new Date(2)];
     room.switcherOnLog = [new Date(1)];
     room.firstMotionNearLog = [new Date(1)];
-    room.motionNearLog = [new Date(1)]
+    room.motionNearLog = [new Date(1)];
+    room.motionStack = 0;
 
 
 };
