@@ -336,16 +336,16 @@ var Room = function (settings) {
 
 
         if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()) {
-            if (room.averageTemperature() < 22.7 && room.condStatus !== 'heat') {
+            if (room.averageTemperature() < 22.5 && room.condStatus !== 'heat') {
                 room.condStatus = 'heat';
                 room.irBlasterSend('cond_30_heat_max_one_way');
-            } else if (room.averageTemperature() > 23.3 && room.condStatus !== 'cool') {
+            } else if (room.averageTemperature() > 24.5 && room.condStatus !== 'cool') {
                 room.condStatus = 'cool';
                 room.irBlasterSend('cond_16_cool_max_one_way');
             } else if (room.averageTemperature() > 23 && room.condStatus === 'heat') {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < 23 && room.condStatus === 'cool') {
+            } else if (room.averageTemperature() < 24 && room.condStatus === 'cool') {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
             }
