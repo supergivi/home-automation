@@ -300,7 +300,7 @@ var Room = function (settings) {
     };
 
     room.clockCycle = function () {
-        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature());
+        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature() + ' cond status: ' + room.condStatus);
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
@@ -336,16 +336,16 @@ var Room = function (settings) {
 
 
         if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()) {
-            if (room.averageTemperature() < 22.5 && room.condStatus !== 'heat') {
+            if (room.averageTemperature() < 22.7 && room.condStatus !== 'heat') {
                 room.condStatus = 'heat';
-                room.irBlasterSend('cond_30_heat_max_all');
-            } else if (room.averageTemperature() > 23.5 && room.condStatus !== 'cool') {
+                room.irBlasterSend('cond_30_heat_max_one_way');
+            } else if (room.averageTemperature() > 23.3 && room.condStatus !== 'cool') {
                 room.condStatus = 'cool';
-                room.irBlasterSend('cond_16_cool_max_all');
-            } else if (room.averageTemperature() > 23.2 && room.condStatus === 'heat') {
+                room.irBlasterSend('cond_16_cool_max_one_way');
+            } else if (room.averageTemperature() > 23 && room.condStatus === 'heat') {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < 22.8 && room.condStatus === 'cool') {
+            } else if (room.averageTemperature() < 23 && room.condStatus === 'cool') {
                 room.condStatus = false;
                 room.irBlasterSend('cond_off');
             }
@@ -412,10 +412,10 @@ var Room = function (settings) {
 
     room.irBlasterSend = function (command) {
         if (room.irBlaster) {
-            [1, 10000].forEach(function (time) {
+            [1].forEach(function (time) {
                 setTimeout(function () {
                     http.request({
-                        url: room.irBlaster + 'code=' + command + '&rand=' + new Date().getTime(),
+                        url: room.irBlaster + 'raw_code=' + command + '&rand=' + new Date().getTime(),
                         method: 'GET',
                         async: true
                     });
