@@ -511,7 +511,7 @@ var Room = function (settings) {
         if (room.isAutomationOn()) {
             return 23;
         } else {
-            if (time.getHours() >= 2 && time.getHours() <= 10) {
+            if (time.getHours() >= 0 && time.getHours() <= 10) {
                 return 20;
                 //} else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
                 //    return 24;
