@@ -90,7 +90,6 @@ var bigRoom = new Room(
         luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
         //temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
         temperatureSensors: [zway.devices[5].instances[0].commandClasses[49].data[1].val],
-
         irBlaster: 'http://irblaster1.local/ir?',
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 100,

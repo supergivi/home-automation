@@ -152,7 +152,7 @@ var Room = function (settings) {
         if (Object.prototype.toString.call(room.motionSensors) === '[object Array]') {
             console.log(room.name + ': subscribe to motion sensors');
 
-            room.motionSensors.forEach(function(sensor){
+            room.motionSensors.forEach(function (sensor) {
                 sensor.bind(function () {
                     room.onMotionDetect(this)
                 });
@@ -224,7 +224,7 @@ var Room = function (settings) {
         } else {
             console.log(room.name + ': motion not detect');
             room.motionStack -= 1;
-            if (room.motionStack < 0){
+            if (room.motionStack < 0) {
                 room.motionStack = 0;
             }
 
@@ -336,17 +336,17 @@ var Room = function (settings) {
 
 
         if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()) {
-            if (room.averageTemperature() < 22.5 && room.condStatus !== 'heat') {
-                room.condStatus = 'heat';
+            if (room.averageTemperature() < 22.8 && room.getCondStatus() !== 'heat') {
+                room.setCondStatus('heat');
                 room.irBlasterSend('cond_30_heat_max_one_way');
-            } else if (room.averageTemperature() > 24.5 && room.condStatus !== 'cool') {
-                room.condStatus = 'cool';
+            } else if (room.averageTemperature() > 23.7 && room.getCondStatus() !== 'cool') {
+                room.setCondStatus('cool');
                 room.irBlasterSend('cond_16_cool_max_one_way');
-            } else if (room.averageTemperature() > 23 && room.condStatus === 'heat') {
-                room.condStatus = false;
+            } else if (room.averageTemperature() > 23 && room.getCondStatus(true) === 'heat') {
+                room.setCondStatus(false);
                 room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < 24 && room.condStatus === 'cool') {
-                room.condStatus = false;
+            } else if (room.averageTemperature() < 23.5 && room.getCondStatus(true) === 'cool') {
+                room.setCondStatus(false);
                 room.irBlasterSend('cond_off');
             }
 
@@ -355,22 +355,19 @@ var Room = function (settings) {
 
 
         if (room.isFull() && room.optimumTemperature() === 20 && room.averageTemperature()) {
-            if (room.averageTemperature() < 19.5 && room.condStatus !== 'heat') {
-                room.condStatus = 'heat';
+            if (room.averageTemperature() < 19.8 && room.getCondStatus() !== 'heat') {
+                room.setCondStatus('heat');
                 room.irBlasterSend('cond_30_heat_max_all');
-            } else if (room.averageTemperature() > 21 && room.condStatus !== 'cool') {
-                room.condStatus = 'cool';
+            } else if (room.averageTemperature() > 20.7 && room.getCondStatus() !== 'cool') {
+                room.setCondStatus('cool');
                 room.irBlasterSend('cond_16_cool_max_all');
-            } else if (room.averageTemperature() > 20.5 && room.condStatus === 'heat') {
-                room.condStatus = false;
+            } else if (room.averageTemperature() > 20.5 && room.getCondStatus(true) === 'heat') {
+                room.setCondStatus(false);
                 room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < 20 && room.condStatus === 'cool') {
-                room.condStatus = false;
+            } else if (room.averageTemperature() < 20 && room.getCondStatus(true) === 'cool') {
+                room.setCondStatus(false);
                 room.irBlasterSend('cond_off');
             }
-
-
-
 
 
             //else if (room.averageTemperature() > 20 && room.averageTemperature() < 21 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
@@ -380,8 +377,8 @@ var Room = function (settings) {
         }
 
 
-        if (room.isAutomationOn() && room.isEmpty() && room.condStatus) {
-            room.condStatus = false;
+        if (room.isAutomationOn() && room.isEmpty() && room.getCondStatus(true)) {
+            room.setCondStatus(false);
             room.irBlasterSend('cond_off');
         }
 
@@ -394,6 +391,23 @@ var Room = function (settings) {
             room.irBlasterSend('lg_tv_power_off');
         }
 
+    };
+
+    room.setCondStatus = function (status) {
+        room.condStatus = status;
+        room.condStatusTime = new Date();
+    };
+
+    room.getCondStatus = function (woTimeout) {
+        if (!woTimeout && room.condStatusTime < (new Date() - 600000)) {
+            return 'timeout';
+        } else {
+            return room.condStatus;
+        }
+    };
+
+    room.isCondOn = function () {
+        !!room.condStatus;
     };
 
     room.isEmpty = function () {
