@@ -48,104 +48,131 @@ var Room = function (settings) {
         room.pushHeatOffLog(new Date())
     };
 
-    room.pushLampOnLog = function (date) {
-        room.lampOnLog.unshift(date);
-        if (room.lampOnLog.length > 100) {
-            room.lampOnLog.length = 100;
-        }
-    };
-
-    room.pushLampOffLog = function (date) {
-        room.lampOffLog.unshift(date);
-        if (room.lampOffLog.length > 100) {
-            room.lampOffLog.length = 100;
-        }
-    };
-
-    room.pushHeatOnLog = function (date) {
-        room.heatOnLog.unshift(date);
-        if (room.heatOnLog.length > 100) {
-            room.heatOnLog.length = 100;
-        }
-    };
-
-    room.pushHeatOffLog = function (date) {
-        room.heatOffLog.unshift(date);
-        if (room.heatOffLog.length > 100) {
-            room.heatOffLog.length = 100;
-        }
-    };
-
-    room.pushMotionDetectLog = function (date) {
-        room.motionDetectLog.unshift(date);
-        if (room.motionDetectLog.length > 100) {
-            room.motionDetectLog.length = 100;
-        }
-    };
-
-    room.pushMotionNoDetectLog = function (date) {
-        room.motionNoDetectLog.unshift(date);
-        if (room.motionNoDetectLog.length > 100) {
-            room.motionNoDetectLog.length = 100;
-        }
-    };
-
-    room.pushAutomationSwitchOnLog = function (date) {
-        room.automationSwitchOnLog.unshift(date);
-        if (room.automationSwitchOnLog.length > 100) {
-            room.automationSwitchOnLog.length = 100;
-        }
-    };
-
-    room.pushAutomationSwitchOffLog = function (date) {
-        room.automationSwitchOffLog.unshift(date);
-        if (room.automationSwitchOffLog.length > 100) {
-            room.automationSwitchOffLog.length = 100;
-        }
-    };
 
 
-    room.pushDoorSwitcherOnLog = function (date) {
-        room.doorSwitcherOnLog.unshift(date);
-        if (room.doorSwitcherOnLog.length > 100) {
-            room.doorSwitcherOnLog.length = 100;
+    [
+        'lampOnLog',
+        'lampOffLog',
+        'heatOnLog',
+        'heatOffLog',
+        'motionDetectLog',
+        'motionNoDetectLog',
+        'automationSwitchOnLog',
+        'automationSwitchOffLog',
+        'doorSwitcherOnLog',
+        'doorSwitcherOffLog',
+        'switcherOnLog',
+        'switcherOffLog',
+        'motionNearLog',
+        'firstMotionNearLog'
+    ].forEach(function(method){
+        methodName = 'push' + method.charAt(0).toUpperCase() + method.slice(1);
+        room[methodName] = function(date){
+            room[method].unshift(date);
+            if (room[method].length > 100){
+                room[method].length = 100;
+            }
         }
-    };
+    });
 
-    room.pushDoorSwitcherOffLog = function (date) {
-        room.doorSwitcherOffLog.unshift(date);
-        if (room.doorSwitcherOffLog.length > 100) {
-            room.doorSwitcherOffLog.length = 100;
-        }
-    };
-
-    room.pushSwitcherOnLog = function (date) {
-        room.switcherOnLog.unshift(date);
-        if (room.switcherOnLog.length > 100) {
-            room.switcherOnLog.length = 100;
-        }
-    };
-
-    room.pushSwitcherOffLog = function (date) {
-        room.switcherOffLog.unshift(date);
-        if (room.switcherOffLog.length > 100) {
-            room.switcherOffLog.length = 100;
-        }
-    };
-
-    room.pushMotionNearLog = function (date) {
-        room.motionNearLog.unshift(date);
-        if (room.motionNearLog.length > 100) {
-            room.motionNearLog.length = 100;
-        }
-    };
-
-    room.pushFirstMotionNearLog = function (date) {
-        room.firstMotionNearLog.unshift(date);
-        if (room.firstMotionNearLog.length > 100) {
-            room.firstMotionNearLog.length = 100;
-        }
-    };
+    //room.pushLampOnLog = function (date) {
+    //    room.lampOnLog.unshift(date);
+    //    if (room.lampOnLog.length > 100) {
+    //        room.lampOnLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushLampOffLog = function (date) {
+    //    room.lampOffLog.unshift(date);
+    //    if (room.lampOffLog.length > 100) {
+    //        room.lampOffLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushHeatOnLog = function (date) {
+    //    room.heatOnLog.unshift(date);
+    //    if (room.heatOnLog.length > 100) {
+    //        room.heatOnLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushHeatOffLog = function (date) {
+    //    room.heatOffLog.unshift(date);
+    //    if (room.heatOffLog.length > 100) {
+    //        room.heatOffLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushMotionDetectLog = function (date) {
+    //    room.motionDetectLog.unshift(date);
+    //    if (room.motionDetectLog.length > 100) {
+    //        room.motionDetectLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushMotionNoDetectLog = function (date) {
+    //    room.motionNoDetectLog.unshift(date);
+    //    if (room.motionNoDetectLog.length > 100) {
+    //        room.motionNoDetectLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushAutomationSwitchOnLog = function (date) {
+    //    room.automationSwitchOnLog.unshift(date);
+    //    if (room.automationSwitchOnLog.length > 100) {
+    //        room.automationSwitchOnLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushAutomationSwitchOffLog = function (date) {
+    //    room.automationSwitchOffLog.unshift(date);
+    //    if (room.automationSwitchOffLog.length > 100) {
+    //        room.automationSwitchOffLog.length = 100;
+    //    }
+    //};
+    //
+    //
+    //room.pushDoorSwitcherOnLog = function (date) {
+    //    room.doorSwitcherOnLog.unshift(date);
+    //    if (room.doorSwitcherOnLog.length > 100) {
+    //        room.doorSwitcherOnLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushDoorSwitcherOffLog = function (date) {
+    //    room.doorSwitcherOffLog.unshift(date);
+    //    if (room.doorSwitcherOffLog.length > 100) {
+    //        room.doorSwitcherOffLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushSwitcherOnLog = function (date) {
+    //    room.switcherOnLog.unshift(date);
+    //    if (room.switcherOnLog.length > 100) {
+    //        room.switcherOnLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushSwitcherOffLog = function (date) {
+    //    room.switcherOffLog.unshift(date);
+    //    if (room.switcherOffLog.length > 100) {
+    //        room.switcherOffLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushMotionNearLog = function (date) {
+    //    room.motionNearLog.unshift(date);
+    //    if (room.motionNearLog.length > 100) {
+    //        room.motionNearLog.length = 100;
+    //    }
+    //};
+    //
+    //room.pushFirstMotionNearLog = function (date) {
+    //    room.firstMotionNearLog.unshift(date);
+    //    if (room.firstMotionNearLog.length > 100) {
+    //        room.firstMotionNearLog.length = 100;
+    //    }
+    //};
 
 
     room.subscribeToMotionSensor = function () {
@@ -336,16 +363,16 @@ var Room = function (settings) {
 
 
         if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()) {
-            if (room.averageTemperature() < 22.8 && room.getCondStatus() !== 'heat') {
+            if (room.averageTemperature() < 22.3 && room.getCondStatus() !== 'heat') {
                 room.setCondStatus('heat');
                 room.irBlasterSend('cond_30_heat_max_one_way');
-            } else if (room.averageTemperature() > 23.7 && room.getCondStatus() !== 'cool') {
+            } else if (room.averageTemperature() > 23.2 && room.getCondStatus() !== 'cool') {
                 room.setCondStatus('cool');
                 room.irBlasterSend('cond_16_cool_max_one_way');
-            } else if (room.averageTemperature() > 23 && room.getCondStatus(true) === 'heat') {
+            } else if (room.averageTemperature() > 22.5 && room.getCondStatus(true) === 'heat') {
                 room.setCondStatus(false);
                 room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < 23.5 && room.getCondStatus(true) === 'cool') {
+            } else if (room.averageTemperature() < 23.0 && room.getCondStatus(true) === 'cool') {
                 room.setCondStatus(false);
                 room.irBlasterSend('cond_off');
             }
@@ -404,10 +431,6 @@ var Room = function (settings) {
         } else {
             return room.condStatus;
         }
-    };
-
-    room.isCondOn = function () {
-        !!room.condStatus;
     };
 
     room.isEmpty = function () {
