@@ -368,7 +368,26 @@ var Room = function (settings) {
         }
 
 
-        if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()) {
+        //if (room.isFull() && room.optimumTemperature() === 23 && room.averageTemperature()) {
+        //    if (room.averageTemperature() < 22.3 && room.getCondStatus() !== 'heat') {
+        //        room.setCondStatus('heat');
+        //        room.irBlasterSend('cond_30_heat_max_one_way');
+        //    } else if (room.averageTemperature() > 23.2 && room.getCondStatus() !== 'cool') {
+        //        room.setCondStatus('cool');
+        //        room.irBlasterSend('cond_16_cool_max_one_way');
+        //    } else if (room.averageTemperature() > 22.5 && room.getCondStatus(true) === 'heat') {
+        //        room.setCondStatus(false);
+        //        room.irBlasterSend('cond_off');
+        //    } else if (room.averageTemperature() < 23.0 && room.getCondStatus(true) === 'cool') {
+        //        room.setCondStatus(false);
+        //        room.irBlasterSend('cond_off');
+        //    }
+        //
+        //
+        //}
+
+
+        if (room.isFull() && room.averageTemperature()) {
             if (room.averageTemperature() < 22.3 && room.getCondStatus() !== 'heat') {
                 room.setCondStatus('heat');
                 room.irBlasterSend('cond_30_heat_max_one_way');
@@ -387,27 +406,23 @@ var Room = function (settings) {
         }
 
 
-        if (room.isFull() && room.optimumTemperature() === 20 && room.averageTemperature()) {
-            if (room.averageTemperature() < 19.3 && room.getCondStatus() !== 'heat') {
-                room.setCondStatus('heat');
-                room.irBlasterSend('cond_30_heat_max_all');
-            } else if (room.averageTemperature() > 20.2 && room.getCondStatus() !== 'cool') {
-                room.setCondStatus('cool');
-                room.irBlasterSend('cond_16_cool_max_all');
-            } else if (room.averageTemperature() > 19.5 && room.getCondStatus(true) === 'heat') {
-                room.setCondStatus(false);
-                room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < 20 && room.getCondStatus(true) === 'cool') {
-                room.setCondStatus(false);
-                room.irBlasterSend('cond_off');
-            }
-
-
-            //else if (room.averageTemperature() > 20 && room.averageTemperature() < 21 && (room.condStatus === 'heat' || room.condStatus === 'cool')) {
-            //    room.condStatus = false;
-            //    room.irBlasterSend('cond_off');
-            //}
-        }
+        //if (room.isFull() && room.optimumTemperature() === 20 && room.averageTemperature()) {
+        //    if (room.averageTemperature() < 19.3 && room.getCondStatus() !== 'heat') {
+        //        room.setCondStatus('heat');
+        //        room.irBlasterSend('cond_30_heat_max_all');
+        //    } else if (room.averageTemperature() > 20.2 && room.getCondStatus() !== 'cool') {
+        //        room.setCondStatus('cool');
+        //        room.irBlasterSend('cond_16_cool_max_all');
+        //    } else if (room.averageTemperature() > 19.5 && room.getCondStatus(true) === 'heat') {
+        //        room.setCondStatus(false);
+        //        room.irBlasterSend('cond_off');
+        //    } else if (room.averageTemperature() < 20 && room.getCondStatus(true) === 'cool') {
+        //        room.setCondStatus(false);
+        //        room.irBlasterSend('cond_off');
+        //    }
+        //
+        //
+        //}
 
 
         if (room.isAutomationOn() && room.isEmpty() && room.getCondStatus(true)) {
@@ -423,6 +438,7 @@ var Room = function (settings) {
             room.tvStatus = false;
             room.irBlasterSend('lg_tv_power_off');
         }
+        room.getOptimumTemperature();
 
     };
 
@@ -562,6 +578,18 @@ var Room = function (settings) {
         return false
     };
 
+    room.getOptimumTemperature = function(){
+        http.request({
+            url: 'http://localhost:4567/room.json',
+            method: 'GET',
+            async: true,
+            success: function(resp){
+                room.setTemperature = resp.set_temperature;
+                console.log('mama ' + room.setTemperature);
+            }
+        });
+    };
+
     room.name = settings.name;
     room.lamp = settings.lamp;
     room.heat = settings.heat;
@@ -580,6 +608,7 @@ var Room = function (settings) {
     //Defaults
 
     room.currentTemperature = [];
+    room.setTemperature = 23;
 
     room.lampOnLog = [new Date(1)];
     room.lampOffLog = [new Date(2)];
