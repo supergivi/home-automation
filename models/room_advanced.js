@@ -584,7 +584,7 @@ var Room = function (settings) {
             method: 'GET',
             async: true,
             success: function(resp){
-                room.setTemperature = resp.set_temperature;
+                room.setTemperature = resp.data.set_temperature;
                 console.log('mama ' + room.setTemperature);
             }
         });
