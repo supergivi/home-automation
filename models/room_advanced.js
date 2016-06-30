@@ -310,6 +310,12 @@ var Room = function (settings) {
     room.onTemperatureChange = function (index, level) {
         console.log(room.name + ': temperature changed');
         room.currentTemperature[index] = level.value;
+        http.request({
+            url: 'http://localhost:4567/room.json',
+            method: 'POST',
+            data: JSON.stringify({current_temperature: room.averageTemperature()}),
+            async: true
+        });
         room.clockCycle();
     };
 
