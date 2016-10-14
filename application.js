@@ -95,7 +95,7 @@ var bigRoom = new Room(
         minLux: 100,
         timeout: 900,
         stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level,
-        //heat: zway.devices[10].instances[2].SwitchBinary
+        heat: zway.devices[10].instances[2].SwitchBinary
     }
 );
 

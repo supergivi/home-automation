@@ -75,104 +75,6 @@ var Room = function (settings) {
         }
     });
 
-    //room.pushLampOnLog = function (date) {
-    //    room.lampOnLog.unshift(date);
-    //    if (room.lampOnLog.length > 100) {
-    //        room.lampOnLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushLampOffLog = function (date) {
-    //    room.lampOffLog.unshift(date);
-    //    if (room.lampOffLog.length > 100) {
-    //        room.lampOffLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushHeatOnLog = function (date) {
-    //    room.heatOnLog.unshift(date);
-    //    if (room.heatOnLog.length > 100) {
-    //        room.heatOnLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushHeatOffLog = function (date) {
-    //    room.heatOffLog.unshift(date);
-    //    if (room.heatOffLog.length > 100) {
-    //        room.heatOffLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushMotionDetectLog = function (date) {
-    //    room.motionDetectLog.unshift(date);
-    //    if (room.motionDetectLog.length > 100) {
-    //        room.motionDetectLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushMotionNoDetectLog = function (date) {
-    //    room.motionNoDetectLog.unshift(date);
-    //    if (room.motionNoDetectLog.length > 100) {
-    //        room.motionNoDetectLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushAutomationSwitchOnLog = function (date) {
-    //    room.automationSwitchOnLog.unshift(date);
-    //    if (room.automationSwitchOnLog.length > 100) {
-    //        room.automationSwitchOnLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushAutomationSwitchOffLog = function (date) {
-    //    room.automationSwitchOffLog.unshift(date);
-    //    if (room.automationSwitchOffLog.length > 100) {
-    //        room.automationSwitchOffLog.length = 100;
-    //    }
-    //};
-    //
-    //
-    //room.pushDoorSwitcherOnLog = function (date) {
-    //    room.doorSwitcherOnLog.unshift(date);
-    //    if (room.doorSwitcherOnLog.length > 100) {
-    //        room.doorSwitcherOnLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushDoorSwitcherOffLog = function (date) {
-    //    room.doorSwitcherOffLog.unshift(date);
-    //    if (room.doorSwitcherOffLog.length > 100) {
-    //        room.doorSwitcherOffLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushSwitcherOnLog = function (date) {
-    //    room.switcherOnLog.unshift(date);
-    //    if (room.switcherOnLog.length > 100) {
-    //        room.switcherOnLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushSwitcherOffLog = function (date) {
-    //    room.switcherOffLog.unshift(date);
-    //    if (room.switcherOffLog.length > 100) {
-    //        room.switcherOffLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushMotionNearLog = function (date) {
-    //    room.motionNearLog.unshift(date);
-    //    if (room.motionNearLog.length > 100) {
-    //        room.motionNearLog.length = 100;
-    //    }
-    //};
-    //
-    //room.pushFirstMotionNearLog = function (date) {
-    //    room.firstMotionNearLog.unshift(date);
-    //    if (room.firstMotionNearLog.length > 100) {
-    //        room.firstMotionNearLog.length = 100;
-    //    }
-    //};
 
 
     room.subscribeToMotionSensor = function () {
@@ -335,7 +237,7 @@ var Room = function (settings) {
     };
 
     room.clockCycle = function () {
-        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature() + ' cond status: ' + room.condStatus);
+        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature() + ' cond status: ' + room.condStatus  + ' heat: ' + room.isHeatOn());
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
@@ -556,14 +458,14 @@ var Room = function (settings) {
     room.optimumTemperature = function () {
         var time = new Date();
         if (room.isAutomationOn()) {
-            return 23;
+            return 23.3;
         } else {
             if (time.getHours() >= 0 && time.getHours() <= 10) {
                 return 20;
                 //} else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
                 //    return 24;
             } else {
-                return 23;
+                return 23.3;
             }
         }
     };
