@@ -19,6 +19,8 @@ var Room = function (settings) {
         room.setEmpty();
         room.subscribeToMotionSensor();
         room.subscribeToLuxSensor();
+        room.subscribeToTamper();
+
         room.subscribeToTemperatureSensor();
         room.subscribeToSwitcher();
         room.subscribeToDoorSwitcher();
@@ -100,6 +102,16 @@ var Room = function (settings) {
         }
     };
 
+    room.subscribeToTamper = function () {
+        if (room.tamper) {
+            console.log(room.name + ': subscribe to tamper');
+            room.tamper.bind(function () {
+                console.log(room.name + ': tamper');
+
+                //room.onTamperChange(this);
+            });
+        }
+    };
 
     room.subscribeToStopAutomationSwitcher = function () {
         if (room.stopAutomationSwitcher) {
@@ -269,7 +281,7 @@ var Room = function (settings) {
     room.stopAutomationSwitcher = settings.stopAutomationSwitcher;
     room.minLux = settings.minLux;
     room.emptyRoomTimeout = settings.timeout;
-
+    room.tamper = settings.tamper;
     //Defaults
 
     room.illuminationIsOn = false;
