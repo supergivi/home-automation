@@ -2,7 +2,7 @@ executeFile('custom/models/home.js');
 executeFile('custom/models/room_advanced.js');
 executeFile('custom/models/probki.js');
 executeFile('custom/models/lamp.js');
-
+// 8:0:48:10
 var home = new Home({name: 'Дом'});
 
 var lamps = {
@@ -33,9 +33,9 @@ var wc = new Room(
     {
         name: 'wc',
         lamp: lamps.wc,
-        motionSensors: [zway.devices[8].instances[0].commandClasses[48].data[12].level],
-        luxSensor: zway.devices[8].instances[0].commandClasses[49].data[3].val,
-        temperatureSensors: [ zway.devices[8].instances[0].commandClasses[49].data[1].val],
+        motionSensors: [zway.devices[12].instances[0].commandClasses[48].data[12].level],
+        luxSensor: zway.devices[12].instances[0].commandClasses[49].data[3].val,
+        temperatureSensors: [ zway.devices[12].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[7].instances[2].commandClasses[37].data.level,
         minLux: 100,
         timeout: 120

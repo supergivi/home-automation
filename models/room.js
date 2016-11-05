@@ -214,7 +214,7 @@ var Room = function (settings) {
 
         if (room.isStopAutomation()) {
             if (room.illuminationIsOn) {
-                room.turnLampOff();
+                //room.turnLampOff();
             }
         } else {
             if (
