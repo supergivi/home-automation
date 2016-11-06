@@ -51,23 +51,25 @@ var Home = function (settings) {
         }
     };
 
-    home.onInHomeSwitcherChange = function (val) {
-        if (home.full) {
-            home.full = false;
-            console.log(home.name + ': emptyyy');
+    home.onInHomeSwitcherChange = function (level) {
+        if (level.value) {
+            if (home.full) {
+                home.full = false;
+                console.log(home.name + ': emptyyy');
 
-            //home.emptyTimeout = setTimeout(function () {
-            home.rooms.forEach(function (room) {
-                room.forceEmpty();
-            });
-            //}, 120 * 1000)
-        } else {
-            console.log(home.name + ': fullll');
+                //home.emptyTimeout = setTimeout(function () {
+                home.rooms.forEach(function (room) {
+                    room.forceEmpty();
+                });
+                //}, 120 * 1000)
+            } else {
+                console.log(home.name + ': fullll');
 
-            home.full = true;
-            home.rooms.forEach(function (room) {
-                room.disableForceEmpty();
-            });
+                home.full = true;
+                home.rooms.forEach(function (room) {
+                    room.disableForceEmpty();
+                });
+            }
         }
     };
 
