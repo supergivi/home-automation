@@ -103,7 +103,11 @@ var Room = function (settings) {
     };
 
     room.subscribeToTamper = function () {
+        console.log(room.name + ': subscribe to tamper');
+        console.log(room.name + ': subscribe to tamper' + room.tamper);
+
         if (room.tamper) {
+
             console.log(room.name + ': subscribe to tamper');
             room.tamper.bind(function () {
                 console.log(room.name + ': tamper');
