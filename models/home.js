@@ -53,6 +53,9 @@ var Home = function (settings) {
 
     home.onInHomeSwitcherChange = function (level) {
         if (level.value) {
+
+            console.log('ttt ' + level.value);
+
             if (home.full) {
                 home.full = false;
                 console.log(home.name + ': emptyyy');
