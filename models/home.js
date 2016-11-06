@@ -54,11 +54,9 @@ var Home = function (settings) {
     home.onInHomeSwitcherChange = function (level) {
         if (level.value) {
 
-            console.log('ttt ' + level.value);
 
             if (home.full) {
                 home.full = false;
-                console.log(home.name + ': emptyyy');
 
                 //home.emptyTimeout = setTimeout(function () {
                 home.rooms.forEach(function (room) {
@@ -66,8 +64,6 @@ var Home = function (settings) {
                 });
                 //}, 120 * 1000)
             } else {
-                console.log(home.name + ': fullll');
-
                 home.full = true;
                 home.rooms.forEach(function (room) {
                     room.disableForceEmpty();

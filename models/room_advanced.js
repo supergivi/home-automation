@@ -236,10 +236,12 @@ var Room = function (settings) {
 
     room.forceEmpty = function () {
         room.forcedEmpty = true;
+        room.clockCycle();
     };
 
     room.disableForceEmpty = function () {
         room.forcedEmpty = false;
+        room.clockCycle();
     };
 
     room.clockCycle = function () {
@@ -414,6 +416,9 @@ var Room = function (settings) {
     };
 
     room.isBackLight = function () {
+        if (room.forcedEmpty){
+            return false;
+        }
         var nearMotion = room.firstMotionNearLog[0] > (new Date() - (20 * 1000));
         var doorSwitcher = room.doorSwitcherOnLog[0] > (new Date() - (20 * 1000));
         return nearMotion || doorSwitcher;
