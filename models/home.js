@@ -46,12 +46,12 @@ var Home = function (settings) {
         if (home.inHomeSwitcher) {
             console.log(home.name + ': subscribe to in home switcher');
             home.inHomeSwitcher.bind(function () {
-                room.onInHomeSwitcherChange(this);
+                home.onInHomeSwitcherChange(this);
             });
         }
     };
 
-    room.onInHomeSwitcherChange = function (val) {
+    home.onInHomeSwitcherChange = function (val) {
         if (home.full) {
             home.full = false;
             //home.emptyTimeout = setTimeout(function () {
