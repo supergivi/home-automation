@@ -3,7 +3,11 @@ executeFile('custom/models/room_advanced.js');
 executeFile('custom/models/probki.js');
 executeFile('custom/models/lamp.js');
 // 8:0:48:10
-var home = new Home({name: 'Дом'});
+var home = new Home({
+    name: 'Дом',
+    inHomeSwitcher: zway.devices[3].instances[0].commandClasses[156].data[0].sensorState,
+
+});
 
 var lamps = {
     kitchen: new Lamp([zway.devices[4].instances[2].SwitchBinary]),
@@ -76,7 +80,6 @@ var corridor = new Room(
         luxSensor: zway.devices[3].instances[0].commandClasses[49].data[3].val,
         temperatureSensors: [zway.devices[3].instances[0].commandClasses[49].data[1].val],
         switcher: zway.devices[4].instances[1].commandClasses[37].data.level,
-        tamper: zway.devices[3].instances[0].commandClasses[156].data[0].sensorState,
         minLux: 50,
         timeout: 120,
         doorSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level

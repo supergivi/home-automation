@@ -8,8 +8,8 @@ var Home = function (settings) {
     home.name = settings.name;
     home.rooms = [];
     home.lastMotionAt = new Date(1);
-
-
+    home.inHomeSwitcher = settings.inHomeSwitcher;
+    home.full = true;
     home.addRoom = function (room) {
         home.rooms.push(room);
     };
@@ -39,6 +39,32 @@ var Home = function (settings) {
                 room.clockCycle();
             });
         }, 1000 * 10);
+        home.subscribeToInHomeSwitcher();
+    };
+
+    home.subscribeToInHomeSwitcher = function () {
+        if (home.inHomeSwitcher) {
+            console.log(home.name + ': subscribe to in home switcher');
+            home.inHomeSwitcher.bind(function () {
+                room.onInHomeSwitcherChange(this);
+            });
+        }
+    };
+
+    room.onInHomeSwitcherChange = function (val) {
+        if (home.full) {
+            home.full = false;
+            //home.emptyTimeout = setTimeout(function () {
+            home.rooms.forEach(function (room) {
+                room.forceEmpty();
+            });
+            //}, 120 * 1000)
+        } else {
+            home.full = true;
+            home.rooms.forEach(function (room) {
+                room.disableForceEmpty();
+            });
+        }
     };
 
 

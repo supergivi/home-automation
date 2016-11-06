@@ -49,7 +49,6 @@ var Room = function (settings) {
     };
 
 
-
     [
         'lampOnLog',
         'lampOffLog',
@@ -65,16 +64,15 @@ var Room = function (settings) {
         'switcherOffLog',
         'motionNearLog',
         'firstMotionNearLog'
-    ].forEach(function(method){
+    ].forEach(function (method) {
         methodName = 'push' + method.charAt(0).toUpperCase() + method.slice(1);
-        room[methodName] = function(date){
+        room[methodName] = function (date) {
             room[method].unshift(date);
-            if (room[method].length > 100){
+            if (room[method].length > 100) {
                 room[method].length = 100;
             }
         }
     });
-
 
 
     room.subscribeToMotionSensor = function () {
@@ -236,8 +234,16 @@ var Room = function (settings) {
         room.clockCycle();
     };
 
+    room.forceEmpty = function () {
+        room.forcedEmpty = true;
+    };
+
+    room.disableForceEmpty = function () {
+        room.forcedEmpty = false;
+    };
+
     room.clockCycle = function () {
-        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature() + ' cond status: ' + room.condStatus  + ' heat: ' + room.isHeatOn());
+        console.log(room.name + ': debug automation ' + room.isAutomationOn() + ' dark ' + room.isDark() + ' lamp ' + room.isLampOn() + ' full ' + room.isFull() + ' backlight ' + room.isBackLight() + ' average temperature ' + room.averageTemperature() + ' cond status: ' + room.condStatus + ' heat: ' + room.isHeatOn());
 
         if (room.isAutomationOn() && room.isDark() && room.isLampOff() && room.isFull()) {
             room.turnLampOn();
@@ -251,9 +257,9 @@ var Room = function (settings) {
             room.turnLampOn();
         }
 
-        if (!room.isAutomationOn() && room.isLampOn()) {
-            room.turnLampOff();
-        }
+        //if (!room.isAutomationOn() && room.isLampOn()) {
+        //    room.turnLampOff();
+        //}
 
         if (room.isFull() && room.averageTemperature() && room.averageTemperature() < room.optimumTemperature() && !room.isHeatOn()) {
             room.turnHeatOn();
@@ -291,23 +297,23 @@ var Room = function (settings) {
         //}
 
 
-        if (room.isFull() && room.averageTemperature()) {
-            if (room.averageTemperature() < (room.setTemperature - 0.4) && room.getCondStatus() !== 'heat') {
-                room.setCondStatus('heat');
-                room.irBlasterSend('cond_30_heat_max_one_way');
-            } else if (room.averageTemperature() > (room.setTemperature + 0.4) && room.getCondStatus() !== 'cool') {
-                room.setCondStatus('cool');
-                room.irBlasterSend('cond_16_cool_max_one_way');
-            } else if (room.averageTemperature() > (room.setTemperature - 0.2) && room.getCondStatus(true) === 'heat') {
-                room.setCondStatus(false);
-                room.irBlasterSend('cond_off');
-            } else if (room.averageTemperature() < (room.setTemperature + 0.2) && room.getCondStatus(true) === 'cool') {
-                room.setCondStatus(false);
-                room.irBlasterSend('cond_off');
-            }
-
-
-        }
+        //if (room.isFull() && room.averageTemperature()) {
+        //    if (room.averageTemperature() < (room.setTemperature - 0.4) && room.getCondStatus() !== 'heat') {
+        //        room.setCondStatus('heat');
+        //        room.irBlasterSend('cond_30_heat_max_one_way');
+        //    } else if (room.averageTemperature() > (room.setTemperature + 0.4) && room.getCondStatus() !== 'cool') {
+        //        room.setCondStatus('cool');
+        //        room.irBlasterSend('cond_16_cool_max_one_way');
+        //    } else if (room.averageTemperature() > (room.setTemperature - 0.2) && room.getCondStatus(true) === 'heat') {
+        //        room.setCondStatus(false);
+        //        room.irBlasterSend('cond_off');
+        //    } else if (room.averageTemperature() < (room.setTemperature + 0.2) && room.getCondStatus(true) === 'cool') {
+        //        room.setCondStatus(false);
+        //        room.irBlasterSend('cond_off');
+        //    }
+        //
+        //
+        //}
 
 
         //if (room.isFull() && room.optimumTemperature() === 20 && room.averageTemperature()) {
@@ -329,20 +335,20 @@ var Room = function (settings) {
         //}
 
 
-        if (room.isAutomationOn() && room.isEmpty() && room.getCondStatus(true)) {
-            room.setCondStatus(false);
-            room.irBlasterSend('cond_off');
-        }
-
-        if (room.isFull() && !room.tvStatus) {
-            room.tvStatus = true;
-        }
-
-        if (room.isEmpty() && room.tvStatus) {
-            room.tvStatus = false;
-            room.irBlasterSend('lg_tv_power_off');
-        }
-        room.getOptimumTemperature();
+        //if (room.isAutomationOn() && room.isEmpty() && room.getCondStatus(true)) {
+        //    room.setCondStatus(false);
+        //    room.irBlasterSend('cond_off');
+        //}
+        //
+        //if (room.isFull() && !room.tvStatus) {
+        //    room.tvStatus = true;
+        //}
+        //
+        //if (room.isEmpty() && room.tvStatus) {
+        //    room.tvStatus = false;
+        //    room.irBlasterSend('lg_tv_power_off');
+        //}
+        //room.getOptimumTemperature();
 
     };
 
@@ -388,6 +394,9 @@ var Room = function (settings) {
     };
 
     room.isFull = function () {
+        if (room.forcedEmpty){
+          return false;
+        }
         if (!room.isAutomationOn()) {
             return true;
         }
@@ -482,12 +491,12 @@ var Room = function (settings) {
         return false
     };
 
-    room.getOptimumTemperature = function(){
+    room.getOptimumTemperature = function () {
         http.request({
             url: 'http://localhost:4567/room.json',
             method: 'GET',
             async: true,
-            success: function(resp){
+            success: function (resp) {
                 room.setTemperature = resp.data.set_temperature;
             }
         });
