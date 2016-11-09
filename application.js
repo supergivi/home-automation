@@ -6,6 +6,8 @@ executeFile('custom/models/lamp.js');
 var home = new Home({
     name: 'Дом',
     inHomeSwitcher: zway.devices[3].instances[0].commandClasses[156].data[0].sensorState,
+    inHomeSwitcherEnabler: zway.devices[3].instances[0].commandClasses[48].data[1].level,
+
 
 });
 

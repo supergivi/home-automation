@@ -9,6 +9,7 @@ var Home = function (settings) {
     home.rooms = [];
     home.lastMotionAt = new Date(1);
     home.inHomeSwitcher = settings.inHomeSwitcher;
+    home.inHomeSwitcherEnabler = settings.inHomeSwitcherEnabler;
     home.full = true;
     home.addRoom = function (room) {
         home.rooms.push(room);
@@ -52,9 +53,7 @@ var Home = function (settings) {
     };
 
     home.onInHomeSwitcherChange = function (level) {
-        if (level.value) {
-
-
+        if (level.value && home.inHomeSwitcherEnabler.value ) {
             if (home.full) {
                 home.full = false;
 
@@ -73,15 +72,4 @@ var Home = function (settings) {
     };
 
 
-    //home.turnLampsOn = function(){
-    //    home.rooms.forEach(function (room) {
-    //        room.illuminate();
-    //    });
-    //};
-    //
-    //home.turnLampsOff = function(){
-    //    home.rooms.forEach(function (room) {
-    //        room.turnOffLamp();
-    //    });
-    //};
 };

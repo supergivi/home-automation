@@ -236,6 +236,8 @@ var Room = function (settings) {
 
     room.forceEmpty = function () {
         room.forcedEmpty = true;
+        room.turnHeatOff();
+        room.turnLampOff();
         room.clockCycle();
     };
 
