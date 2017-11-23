@@ -92,7 +92,7 @@ var bigRoom = new Room(
     {
         name: 'big room',
         lamp: lamps.bigRoom,
-        motionSensors: [ zway.devices[9].instances[0].commandClasses[48].data[12].level, zway.devices[5].instances[0].commandClasses[48].data[1].level],
+        //motionSensors: [ zway.devices[9].instances[0].commandClasses[48].data[12].level, zway.devices[5].instances[0].commandClasses[48].data[1].level],
         luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
         //temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
         temperatureSensors: [zway.devices[5].instances[0].commandClasses[49].data[1].val],
@@ -100,8 +100,9 @@ var bigRoom = new Room(
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 100,
         timeout: 900,
-        stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level,
-        heat: zway.devices[10].instances[2].SwitchBinary
+        //stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level,
+        heat: zway.devices[10].instances[2].SwitchBinary,
+        alwaysFull: true
     }
 );
 
