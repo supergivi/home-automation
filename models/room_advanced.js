@@ -403,7 +403,9 @@ var Room = function (settings) {
 
     room.optimumTemperature = function () {
         var time = new Date();
-        if (time.getHours() >= 0 && time.getHours() <= 11) {
+        var hours = time.getHours();
+        var clodHours = [22,23,0,1,2,3,4,5,6,7,8];
+        if (clodHours.indexOf(hours) !== -1) {
             return 19;
             //} else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
             //    return 24;
