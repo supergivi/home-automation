@@ -410,7 +410,7 @@ var Room = function (settings) {
             //} else if (time.getHours() >= 11 && time.getHours() <= 12) {  // 11:00 - 12:59
             //    return 24;
         } else {
-            return 22.8;
+            return 22.2;
         }
     };
 
