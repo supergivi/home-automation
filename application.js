@@ -5,8 +5,8 @@ executeFile('custom/models/lamp.js');
 // 8:0:48:10
 var home = new Home({
     name: 'Дом',
-    inHomeSwitcher: zway.devices[3].instances[0].commandClasses[156].data[0].sensorState,
-    inHomeSwitcherEnabler: zway.devices[3].instances[0].commandClasses[48].data[1].level,
+    //inHomeSwitcher: zway.devices[3].instances[0].commandClasses[156].data[0].sensorState,
+    //inHomeSwitcherEnabler: zway.devices[3].instances[0].commandClasses[48].data[1].level,
 
 
 });
@@ -16,7 +16,7 @@ var lamps = {
     wc: new Lamp([zway.devices[7].instances[2].SwitchBinary]),
     bathroom: new Lamp([zway.devices[7].instances[1].SwitchBinary]),
     corridor: new Lamp([zway.devices[4].instances[1].SwitchBinary]),
-    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary, zway.devices[10].instances[1].SwitchBinary]),
+    bigRoom: new Lamp([zway.devices[11].instances[1].SwitchBinary, zway.devices[11].instances[2].SwitchBinary),
     //littleRoom: new Lamp([]),
     bigRoomFake: new Lamp([])
 
@@ -96,12 +96,11 @@ var bigRoom = new Room(
         luxSensor: zway.devices[5].instances[0].commandClasses[49].data[3].val,
         //temperatureSensors: [zway.devices[9].instances[0].commandClasses[49].data[1].val,  zway.devices[8].instances[0].commandClasses[49].data[1].val],
         temperatureSensors: [zway.devices[5].instances[0].commandClasses[49].data[1].val],
-        irBlaster: 'http://irblaster1.local/ir?',
         switcher: zway.devices[11].instances[0].commandClasses[37].data.level,
         minLux: 100,
         timeout: 900,
         //stopAutomationSwitcher: zway.devices[9].instances[0].commandClasses[48].data[10].level,
-        heat: zway.devices[10].instances[2].SwitchBinary,
+        //heat: zway.devices[10].instances[2].SwitchBinary,
         alwaysFull: true
     }
 );

@@ -53,7 +53,7 @@ var Home = function (settings) {
     };
 
     home.onInHomeSwitcherChange = function (level) {
-        if (level.value && home.inHomeSwitcherEnabler.value ) {
+        if (level.value && home.inHomeSwitcherEnabler && home.inHomeSwitcherEnabler.value ) {
             if (home.full) {
                 home.full = false;
 
