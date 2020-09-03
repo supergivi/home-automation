@@ -2,6 +2,8 @@ executeFile('custom/models/home.js');
 executeFile('custom/models/room_advanced.js');
 executeFile('custom/models/probki.js');
 executeFile('custom/models/lamp.js');
+executeFile('custom/models/rc.js');
+
 // 8:0:48:10
 var home = new Home({
     name: 'Дом',
@@ -136,5 +138,8 @@ bigRoom.neighbors = [corridor];
 var probki = new Probki({
     devices: [zway.devices[3]]
 });
+
+var rc = new Rc();
+rc.start();
 home.start();
 probki.start();
