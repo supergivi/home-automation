@@ -3,20 +3,76 @@ var Rc = function () {
 
   self.start = function () {
     zway.devices[13].instances[0].commandClasses[91].data.currentScene.bind(function () {
-      console.log("devices.13 " + zway.devices[13].instances[0].commandClasses[91].data.keyAttribute.value)
-      if (this.value === 4 && zway.devices[13].instances[0].commandClasses[91].data.keyAttribute.value === 0) {
-        if (self.toggle4) {
-          zway.devices[11].instances[1].SwitchBinary.Set(0)
-          self.toggle4 = false;
-        } else {
-          zway.devices[11].instances[1].SwitchBinary.Set(1)
-          self.toggle4 = true;
-        }
+      var keyStatus = zway.devices[13].instances[0].commandClasses[91].data.keyAttribute.value;
+      if (this.value === 4 && keyStatus === 0) {
+        zway.devices[11].instances[1].SwitchBinary.Set(1);
+      }
+
+      if (this.value === 4 && keyStatus === 2) {
+        zway.devices[11].instances[1].SwitchBinary.Set(0);
+      }
+
+
+      if (this.value === 1 && keyStatus === 0) {
+        zway.devices[11].instances[1].SwitchBinary.Set(0);
+        zway.devices[11].instances[2].SwitchBinary.Set(0);
+        zway.devices[10].instances[2].SwitchBinary.Set(1);
+        zway.devices[14].instances[1].SwitchBinary.Set(1);
+      }
+
+      if (this.value === 2 && keyStatus === 0) {
+        zway.devices[10].instances[2].SwitchBinary.Set(1);
+
+      }
+
+      if (this.value === 2 && keyStatus === 2) {
+        zway.devices[10].instances[2].SwitchBinary.Set(0);
+      }
+
+      if (this.value === 3 && keyStatus === 0) {
+        zway.devices[11].instances[1].SwitchBinary.Set(1);
+        zway.devices[11].instances[2].SwitchBinary.Set(1);
+        zway.devices[10].instances[2].SwitchBinary.Set(1);
+        zway.devices[14].instances[1].SwitchBinary.Set(1);
+      }
+
+      if (this.value === 3 && keyStatus === 2) {
+        zway.devices[11].instances[1].SwitchBinary.Set(0);
+        zway.devices[11].instances[2].SwitchBinary.Set(0);
+        zway.devices[10].instances[2].SwitchBinary.Set(0);
+        zway.devices[14].instances[1].SwitchBinary.Set(0);
+      }
+
+      if (this.value === 5 && keyStatus === 0) {
+        http.request({
+          url: "http://192.168.0.23/2/on?" + new Date().getTime(),
+          method: 'GET',
+          async: true
+        });
+
+        http.request({
+          url: "http://192.168.0.23/1/on?" + new Date().getTime(),
+          method: 'GET',
+          async: true
+        });
+      }
+
+      if (this.value === 5 && keyStatus === 2) {
+        http.request({
+          url: "http://192.168.0.23/2/off?" + new Date().getTime(),
+          method: 'GET',
+          async: true
+        });
+
+        http.request({
+          url: "http://192.168.0.23/1/off?" + new Date().getTime(),
+          method: 'GET',
+          async: true
+        });
       }
 
     });
   }
-  self.toggle4 = false;
 
 
 };
