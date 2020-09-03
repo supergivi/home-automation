@@ -16,30 +16,30 @@ var Rc = function () {
       if (this.value === 1 && keyStatus === 0) {
         zway.devices[11].instances[1].SwitchBinary.Set(0);
         zway.devices[11].instances[2].SwitchBinary.Set(0);
-        zway.devices[10].instances[2].SwitchBinary.Set(1);
+        zway.devices[10].instances[1].SwitchBinary.Set(1);
         zway.devices[14].instances[1].SwitchBinary.Set(1);
       }
 
       if (this.value === 2 && keyStatus === 0) {
-        zway.devices[10].instances[2].SwitchBinary.Set(1);
+        zway.devices[10].instances[1].SwitchBinary.Set(1);
 
       }
 
       if (this.value === 2 && keyStatus === 2) {
-        zway.devices[10].instances[2].SwitchBinary.Set(0);
+        zway.devices[10].instances[1].SwitchBinary.Set(0);
       }
 
       if (this.value === 3 && keyStatus === 0) {
         zway.devices[11].instances[1].SwitchBinary.Set(1);
         zway.devices[11].instances[2].SwitchBinary.Set(1);
-        zway.devices[10].instances[2].SwitchBinary.Set(1);
+        zway.devices[10].instances[1].SwitchBinary.Set(1);
         zway.devices[14].instances[1].SwitchBinary.Set(1);
       }
 
       if (this.value === 3 && keyStatus === 2) {
         zway.devices[11].instances[1].SwitchBinary.Set(0);
         zway.devices[11].instances[2].SwitchBinary.Set(0);
-        zway.devices[10].instances[2].SwitchBinary.Set(0);
+        zway.devices[10].instances[1].SwitchBinary.Set(0);
         zway.devices[14].instances[1].SwitchBinary.Set(0);
       }
 
